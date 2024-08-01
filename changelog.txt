@@ -1,0 +1,6 @@
+flutter 3.22.0
+
+01/08/2024 (0.0.1)
+1. NEW: Project init.
+2. NEW: Categories, Products data are read and cached.
+3. NEW: ProductPage, DetailsPage are added.

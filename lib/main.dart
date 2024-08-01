@@ -1,7 +1,24 @@
-import 'package:flutter/material.dart';
+import 'package:apos_app/lib_exp.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-void main() {
-  runApp(const MainApp());
+final navigatorKey = GlobalKey<NavigatorState>();
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => AuthBloc()),
+        BlocProvider(create: (_) => ItemBloc()),
+      ],
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -9,10 +26,44 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+    return MaterialApp(
+      title: "aPOS-App",
+      debugShowCheckedModeBanner: false,
+      navigatorKey: navigatorKey,
+      theme: ThemeData(
+        useMaterial3: true,
+        primaryColor: Consts.primaryColor,
+      ),
+      home: GlobalLoaderOverlay(
+        useDefaultLoading: false,
+        overlayColor: Colors.transparent,
+        overlayWidgetBuilder: (_) => const LoadingWidget(),
+        child: const SafeArea(
+          child: SplashPage(),
+        ),
+      ),
+    );
+  }
+}
+
+class LoadingWidget extends StatelessWidget {
+  const LoadingWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.black12,
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            LoadingAnimationWidget.threeArchedCircle(
+              color: Consts.primaryColor,
+              size: 50,
+            ),
+            verticalHeight32,
+            myText("Loading"),
+          ],
         ),
       ),
     );
