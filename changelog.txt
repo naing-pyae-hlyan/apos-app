@@ -1,4 +1,6 @@
 flutter 3.22.0
+04/08/2024 (0.0.2)
+1. WIP: AddToCard.
 
 01/08/2024 (0.0.1)
 1. NEW: Project init.

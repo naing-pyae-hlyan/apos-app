@@ -15,25 +15,15 @@ class _NavProductsPageState extends State<NavProductsPage> {
   Widget build(BuildContext context) {
     itemWidth = context.screenWidth * 0.3 - 8;
     return MyScaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // TODO add search
-          verticalHeight8,
-          Expanded(
-            child: ListView.separated(
-              shrinkWrap: true,
-              physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics(),
-              ),
-              itemBuilder: (_, index) {
-                return _listTile(CacheManager.categories[index]);
-              },
-              separatorBuilder: (_, __) => verticalHeight4,
-              itemCount: CacheManager.categories.length,
-            ),
-          ),
-        ],
+      appBar: const ItemsAppBar(),
+      body: ListView.separated(
+        shrinkWrap: true,
+        physics: const BouncingScrollPhysics(),
+        itemBuilder: (_, index) {
+          return _listTile(CacheManager.categories[index]);
+        },
+        separatorBuilder: (_, __) => verticalHeight4,
+        itemCount: CacheManager.categories.length,
       ),
     );
   }

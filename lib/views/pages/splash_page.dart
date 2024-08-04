@@ -10,7 +10,7 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   late AuthBloc authBloc;
-  late ItemBloc itemBloc;
+  late DbBloc itemBloc;
 
   Future<void> _checkCredentials() async {
     final username = await SpHelper.username;
@@ -31,7 +31,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     authBloc = context.read<AuthBloc>();
-    itemBloc = context.read<ItemBloc>();
+    itemBloc = context.read<DbBloc>();
     super.initState();
     doAfterBuild(
       callback: () async {
@@ -45,7 +45,7 @@ class _SplashPageState extends State<SplashPage> {
     return Scaffold(
       backgroundColor: Consts.primaryColor,
       body: BlocListener<AuthBloc, AuthState>(
-        child: BlocListener<ItemBloc, ItemState>(
+        child: BlocListener<DbBloc, DbState>(
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -75,13 +75,13 @@ class _SplashPageState extends State<SplashPage> {
               ],
             ),
           ),
-          listener: (_, ItemState state) {
-            if (state is ItemStateFail) {
+          listener: (_, DbState state) {
+            if (state is DbStateFail) {
               // TODO
               // context.pushAndRemoveUntil(const LoginPage());
             }
 
-            if (state is ItemStateSuccess) {
+            if (state is DbStateGetProductsWithCategoryFromServerSuccess) {
               context.pushAndRemoveUntil(const NavHomePage());
             }
           },
@@ -92,7 +92,7 @@ class _SplashPageState extends State<SplashPage> {
             // context.pushAndRemoveUntil(const LoginPage());
           }
           if (state is AuthStateSuccess) {
-            itemBloc.add(ItemEventGetProductsWithCategory());
+            itemBloc.add(DbEventGetProductsWithCategoryFromServer());
           }
         },
       ),

@@ -3,8 +3,10 @@ export 'auth/auth_event.dart';
 export 'auth/auth_service.dart';
 export 'auth/auth_state.dart';
 
+export 'db/db_bloc.dart';
+export 'db/db_event.dart';
+export 'db/db_state.dart';
 
-export 'item/item_bloc.dart';
-export 'item/item_event.dart';
-export 'item/item_service.dart';
-export 'item/item_state.dart';
+export 'orders/orders_bloc.dart';
+export 'orders/orders_event.dart';
+export 'orders/orders_state.dart';

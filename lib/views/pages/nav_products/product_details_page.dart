@@ -12,6 +12,38 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
+  final ValueNotifier<double> _itemPricingListener = ValueNotifier(0.0);
+  int _itemQty = 1;
+  String? _selectedSize;
+  String? _selectedColor;
+  late OrdersBloc itemsBloc;
+
+  void addToCart() {
+    // final Product item = Product.addItem(
+    //   item: widget.product,
+    //   qty: _itemQty,
+    //   totalPrice: _itemPricingListener.value,
+    // );
+    final item = Item.addItem(
+      product: widget.product,
+      q: _itemQty,
+      tp: _itemPricingListener.value,
+    );
+    itemsBloc.add(OrdersEventAddItem(item: item));
+
+    // Close the ProductDetailsPage
+    context.pop();
+  }
+
+  @override
+  void initState() {
+    itemsBloc = context.read<OrdersBloc>();
+    super.initState();
+    doAfterBuild(callback: () {
+      _itemPricingListener.value = widget.product.price;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
@@ -64,6 +96,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 maxLines: 100,
               ),
             ),
+            verticalHeight16,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: myTitle(
+                widget.product.price.toCurrencyFormat(countryIso: "MMK"),
+              ),
+            ),
             const Divider(thickness: 0.5),
             if (widget.product.sizes.isNotEmpty) ...[
               verticalHeight8,
@@ -72,7 +111,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 child: MultiSelectProductSizes(
                   sizes: widget.product.sizes,
                   oldSizes: const [],
-                  onSelectedSize: (String selectedSize) {},
+                  onSelectedSize: (String selectedSize) {
+                    _selectedSize = selectedSize;
+                  },
                 ),
               ),
             ],
@@ -83,18 +124,52 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 child: MultiSelectProductColors(
                   productColors: widget.product.productColorsEnum,
                   oldHexColors: const [],
-                  onSelectedColors: (String selectedColor) {},
+                  onSelectedColors: (String selectedColor) {
+                    _selectedColor = selectedColor;
+                  },
                 ),
               ),
             ],
             verticalHeight24,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: myTitle(
-                widget.product.price.toCurrencyFormat(countryIso: "MMK"),
+              child: QtyButton(
+                onQtyChanged: (int qty) {
+                  _itemQty = qty;
+                  _itemPricingListener.value = widget.product.price * qty;
+                },
               ),
             ),
-            verticalHeight64,
+            verticalHeight24,
+            Container(
+              padding: const EdgeInsets.all(16),
+              color: Consts.secondaryColor,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  myTitle("Total Payable", color: Consts.descriptionColor),
+                  ValueListenableBuilder(
+                    valueListenable: _itemPricingListener,
+                    builder: (_, double value, ___) {
+                      return myTitle(
+                        "$value".toCurrencyFormat(countryIso: "MMK"),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+            verticalHeight24,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: MyButton(
+                label: "Add to cart",
+                icon: Icons.shopping_cart,
+                fitWidth: true,
+                onPressed: addToCart,
+              ),
+            ),
+            verticalHeight24,
           ],
         ),
       ),

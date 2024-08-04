@@ -1,6 +1,4 @@
-import 'dart:math';
 import 'package:apos_app/lib_exp.dart';
-
 
 class Order {
   String? id;
@@ -52,23 +50,4 @@ class Order {
       'comment': comment,
     };
   }
-}
-
-Order tempOrder(int index) {
-  final statusId = Random().nextInt(4);
-  return Order(
-    id: "#$index",
-    readableId: "",
-    customer: tempCustomer(index),
-    items: List.generate(
-      Random().nextInt(8) + 2,
-      (i) => tempItem(i),
-    ),
-    orderDate: DateTime.now(),
-    totalAmount: Random().nextInt(1000) + 10000,
-    statusId: statusId,
-    status: parseToOrderStatus(statusId),
-    comment:
-        "Cupidatat tempor ullamco anim dolore aliqua ipsum minim nostrud duis dolor occaecat et qui.",
-  );
 }

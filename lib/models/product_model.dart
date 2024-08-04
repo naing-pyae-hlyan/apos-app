@@ -6,7 +6,7 @@ class Product {
   final String name;
   final List<String> base64Images;
   final String? description;
-  final int price;
+  final double price;
   final List<String> sizes;
   final List<int> hexColors;
   final String? categoryId;
@@ -15,6 +15,8 @@ class Product {
 
   //
   final List<ProductColors> productColorsEnum;
+  int qty;
+  double totalPrice;
 
   Product({
     this.id,
@@ -31,6 +33,8 @@ class Product {
 
     //
     required this.productColorsEnum,
+    required this.qty,
+    required this.totalPrice,
   });
 
   factory Product.fromJson(Map<String, dynamic> json, String docId) {
@@ -40,7 +44,7 @@ class Product {
       name: json['name'],
       base64Images: List.from(json["images"].map((x) => x)),
       description: json['description'],
-      price: json['price'],
+      price: (json['price'] as int).toDouble(),
       sizes:
           json['sizes'] == null ? [] : List.from(json['sizes'].map((x) => x)),
       hexColors:
@@ -51,6 +55,8 @@ class Product {
       productColorsEnum: json['colors'] == null
           ? []
           : List.from(json['colors'].map((x) => parseHexToProductColor(x))),
+      qty: 1,
+      totalPrice: (json['price'] as int).toDouble(),
     );
   }
 
@@ -61,8 +67,8 @@ class Product {
       'images': List.from(base64Images.map((x) => x)),
       'description': description,
       'price': price,
-      'sizes': List.from((sizes ?? []).map((x) => x)),
-      'colors': List.from((hexColors ?? []).map((x) => x)),
+      'sizes': List.from((sizes).map((x) => x)),
+      'colors': List.from((hexColors).map((x) => x)),
       'category_id': categoryId,
       'category_name': categoryName,
       'top_sales_count': topSalesCount,

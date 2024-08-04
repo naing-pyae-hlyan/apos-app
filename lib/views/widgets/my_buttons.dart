@@ -7,6 +7,7 @@ class MyButton extends StatelessWidget {
   final Function() onPressed;
   final Color? borderColor;
   final IconData? icon;
+  final bool fitWidth;
   const MyButton({
     super.key,
     required this.label,
@@ -15,6 +16,7 @@ class MyButton extends StatelessWidget {
     this.backgroundColor,
     this.borderColor,
     required this.icon,
+    this.fitWidth = false,
   });
 
   @override
@@ -36,7 +38,7 @@ class MyButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: fitWidth ? MainAxisSize.max : MainAxisSize.min,
           children: [
             myText(
               label,

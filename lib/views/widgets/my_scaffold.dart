@@ -2,7 +2,7 @@ import 'package:apos_app/lib_exp.dart';
 
 class MyScaffold extends StatelessWidget {
   final Widget body;
-  final AppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final FloatingActionButton? fab;
   final EdgeInsetsGeometry? padding;
   const MyScaffold({
@@ -17,14 +17,16 @@ class MyScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => context.hideKeyboard(),
-      child: Scaffold(
-        appBar: appBar,
-        backgroundColor: Consts.scaffoldBackgroundColor,
-        body: Padding(
-          padding: padding ?? const EdgeInsets.fromLTRB(24, 0, 24, 0),
-          child: body,
+      child: SafeArea(
+        child: Scaffold(
+          appBar: appBar,
+          backgroundColor: Consts.scaffoldBackgroundColor,
+          body: Padding(
+            padding: padding ?? const EdgeInsets.fromLTRB(24, 0, 24, 0),
+            child: body,
+          ),
+          floatingActionButton: fab,
         ),
-        floatingActionButton: fab,
       ),
     );
   }

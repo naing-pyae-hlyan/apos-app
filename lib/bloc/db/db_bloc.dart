@@ -1,15 +1,16 @@
 import 'package:apos_app/lib_exp.dart';
 
-class ItemBloc extends Bloc<ItemEvent, ItemState> {
-  ItemBloc() : super(ItemStateInitial()) {
-    on<ItemEventGetProductsWithCategory>(_getProductsWithCategory);
+class DbBloc extends Bloc<DbEvent, DbState> {
+  DbBloc() : super(DbStateInitial()) {
+    on<DbEventGetProductsWithCategoryFromServer>(
+        _getProductsWithCategoryFromServer);
   }
 
-  Future<void> _getProductsWithCategory(
-    ItemEventGetProductsWithCategory event,
-    Emitter<ItemState> emit,
+  Future<void> _getProductsWithCategoryFromServer(
+    DbEventGetProductsWithCategoryFromServer event,
+    Emitter<DbState> emit,
   ) async {
-    emit(ItemStateLoading());
+    emit(DbStateLoading());
     await FFirestoreUtils.categoryCollection.get().then(
       (QuerySnapshot<Category> snapshot) async {
         CacheManager.categories.clear();
@@ -22,11 +23,11 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
             for (var doc in snapshot2.docs) {
               CacheManager.products.add(doc.data());
             }
-            emit(ItemStateSuccess());
+            emit(DbStateGetProductsWithCategoryFromServerSuccess());
           },
         ).catchError(
           (error) {
-            emit(ItemStateFail(
+            emit(DbStateFail(
               error: ErrorModel(message: error.toString(), code: 2),
             ));
           },
@@ -34,7 +35,7 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
       },
     ).catchError(
       (error) {
-        emit(ItemStateFail(
+        emit(DbStateFail(
           error: ErrorModel(message: error.toString(), code: 1),
         ));
       },

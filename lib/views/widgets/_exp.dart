@@ -8,5 +8,6 @@ export 'my_scaffold.dart';
 export 'my_select.dart';
 export 'my_seperator.dart';
 export 'my_text.dart';
+export 'qty_button.dart';
 export 'swipeable_images.dart';
 export 'widgets.dart';
