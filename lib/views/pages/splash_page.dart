@@ -77,7 +77,6 @@ class _SplashPageState extends State<SplashPage> {
           ),
           listener: (_, DbState state) {
             if (state is DbStateFail) {
-              // TODO
               context.pushAndRemoveUntil(const LoginPage());
             }
 
@@ -88,7 +87,6 @@ class _SplashPageState extends State<SplashPage> {
         ),
         listener: (_, AuthState state) {
           if (state is AuthStateFail) {
-            // TODO
             context.pushAndRemoveUntil(const LoginPage());
           }
           if (state is AuthStateLoginSuccess) {

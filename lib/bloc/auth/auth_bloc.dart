@@ -21,6 +21,32 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
 
     final hashPassword = HashUtils.hashPassword(event.password);
+
+    await FFirestoreUtils.customerCollection.get().then(
+      (QuerySnapshot<CustomerModel> snapshot) async {
+        bool authorize = false;
+        for (var doc in snapshot.docs) {
+          if (event.email == doc.data().email &&
+              hashPassword == doc.data().password) {
+            authorize = true;
+            CacheManager.currentCustomer = doc.data();
+            break;
+          }
+        }
+
+        if (authorize) {
+          await SpHelper.rememberMe(
+            email: event.email,
+            password: event.password,
+          );
+          emit(AuthStateLoginSuccess());
+        } else {
+          emit(_authStateFail(message: "Invalid Email or Password", code: 2));
+        }
+      },
+    ).catchError((error) {
+      emit(_authStateFail(message: error.toString(), code: 2));
+    });
   }
 
   Future<void> _onRegister(

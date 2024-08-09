@@ -16,14 +16,21 @@ class _NavProductsPageState extends State<NavProductsPage> {
     itemWidth = context.screenWidth * 0.3 - 8;
     return MyScaffold(
       appBar: const ItemsAppBar(),
-      body: ListView.separated(
-        shrinkWrap: true,
-        physics: const BouncingScrollPhysics(),
-        itemBuilder: (_, index) {
-          return _listTile(CacheManager.categories[index]);
-        },
-        separatorBuilder: (_, __) => verticalHeight4,
-        itemCount: CacheManager.categories.length,
+      body: Column(
+        children: [
+          verticalHeight16,
+          Expanded(
+            child: ListView.separated(
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              itemBuilder: (_, index) {
+                return _listTile(CacheManager.categories[index]);
+              },
+              separatorBuilder: (_, __) => verticalHeight4,
+              itemCount: CacheManager.categories.length,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -40,18 +47,16 @@ class _NavProductsPageState extends State<NavProductsPage> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            myTitle(category.name),
+            Flexible(
+              child: myTitle(category.name, maxLines: 2),
+            ),
             horizontalWidth4,
-            Expanded(child: myText("(${products.length})")),
-            if (products.isNotEmpty)
-              TextButton.icon(
-                onPressed: () {},
-                label: myText("Show All", color: Consts.primaryColor),
-              ),
+            myText("(${products.length})"),
           ],
         ),
+        verticalHeight8,
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: List.generate(

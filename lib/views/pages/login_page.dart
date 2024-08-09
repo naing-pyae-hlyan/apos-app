@@ -46,6 +46,22 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  void _dbStateListener(BuildContext context, DbState state) {
+    if (state is DbStateGetProductsWithCategoryFromServerSuccess) {
+      context.pushAndRemoveUntil(const NavHomePage());
+      return;
+    }
+
+    if (state is DbStateFail) {
+      showErrorDialog(
+        context,
+        title: "Server Error",
+        description: state.error.message,
+        onTapOk: () {},
+      );
+    }
+  }
+
   @override
   void initState() {
     authBloc = context.read<AuthBloc>();
@@ -54,6 +70,7 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     doAfterBuild(
       callback: () {
+        usernameFn.requestFocus();
         errorBloc.add(ErrorEventResert());
         usernameFn.requestFocus();
       },
@@ -75,69 +92,72 @@ class _LoginPageState extends State<LoginPage> {
       body: Center(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              myText("Login", fontSize: 32),
-              verticalHeight64,
-              MyInputField(
-                controller: emailTxtCtrl,
-                focusNode: usernameFn,
-                hintText: "Email",
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.next,
-                errorKey: _userNameErrorKey,
-              ),
-              verticalHeight16,
-              MyPasswordInputField(
-                controller: passwordTxtCtrl,
-                focusNode: passwordFn,
-                hintText: "Password",
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.done,
-                errorKey: _passwordErrorKey,
-                onSubmitted: (String str) {
-                  _login();
-                },
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {},
+          child: BlocListener<DbBloc, DbState>(
+            listener: _dbStateListener,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                myText("Login", fontSize: 32),
+                verticalHeight64,
+                MyInputField(
+                  controller: emailTxtCtrl,
+                  focusNode: usernameFn,
+                  hintText: "Email",
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
+                  errorKey: _userNameErrorKey,
+                ),
+                verticalHeight16,
+                MyPasswordInputField(
+                  controller: passwordTxtCtrl,
+                  focusNode: passwordFn,
+                  hintText: "Password",
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
+                  errorKey: _passwordErrorKey,
+                  onSubmitted: (String str) {
+                    _login();
+                  },
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () {},
+                    child: myText(
+                      "Forgot Password",
+                      color: Consts.primaryColor,
+                    ),
+                  ),
+                ),
+                verticalHeight24,
+                BlocConsumer<AuthBloc, AuthState>(
+                  listener: _loginStateListener,
+                  builder: (_, AuthState state) {
+                    if (state is AuthStateLoading) {
+                      return const MyCircularIndicator();
+                    }
+
+                    return MyButton(
+                      label: "Login",
+                      icon: Icons.login,
+                      labelColor: Colors.white,
+                      backgroundColor: Consts.primaryColor,
+                      onPressed: _login,
+                    );
+                  },
+                ),
+                verticalHeight24,
+                TextButton(
+                  onPressed: () => context.push(const RegisterPage()),
                   child: myText(
-                    "Forgot Password",
+                    "Create an account",
                     color: Consts.primaryColor,
                   ),
                 ),
-              ),
-              verticalHeight24,
-              BlocConsumer<AuthBloc, AuthState>(
-                listener: _loginStateListener,
-                builder: (_, AuthState state) {
-                  if (state is AuthStateLoading) {
-                    return const MyCircularIndicator();
-                  }
-
-                  return MyButton(
-                    label: "Login",
-                    icon: Icons.login,
-                    labelColor: Colors.white,
-                    backgroundColor: Consts.primaryColor,
-                    onPressed: _login,
-                  );
-                },
-              ),
-              verticalHeight24,
-              TextButton(
-                onPressed: () => context.push(const RegisterPage()),
-                child: myText(
-                  "Create an account",
-                  color: Consts.primaryColor,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

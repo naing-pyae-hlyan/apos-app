@@ -4,7 +4,7 @@ class ProductModel {
   final String name;
   final List<String> base64Images;
   final String? description;
-  final double price;
+  final num price;
   final List<String> sizes;
   final List<int> hexColors;
   final String? categoryId;

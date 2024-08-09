@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-const _usernameKey = 'username';
+const _emailKey = 'email';
 const _passwordKey = 'password';
 
 class SpHelper {
@@ -15,15 +15,15 @@ class SpHelper {
   }
 
   static Future<void> rememberMe({
-    required String username,
+    required String email,
     required String password,
   }) async {
-    await setString(_usernameKey, username);
+    await setString(_emailKey, email);
     await setString(_passwordKey, password);
   }
 
   static Future<String> get username async {
-    return await getString(_usernameKey) ?? "";
+    return await getString(_emailKey) ?? "";
   }
 
   static Future<String> get password async {

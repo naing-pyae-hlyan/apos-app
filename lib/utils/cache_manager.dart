@@ -5,6 +5,8 @@ class CacheManager {
   static List<ProductModel> products = [];
   static List<OrderModel> orders = [];
 
+  static CustomerModel? currentCustomer;
+
   static void clear() {
     categories.clear();
     products.clear();
