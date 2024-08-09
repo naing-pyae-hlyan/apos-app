@@ -10,3 +10,7 @@ export 'db/db_state.dart';
 export 'orders/orders_bloc.dart';
 export 'orders/orders_event.dart';
 export 'orders/orders_state.dart';
+
+export 'error/error_bloc.dart';
+export 'error/error_event.dart';
+export 'error/error_state.dart';

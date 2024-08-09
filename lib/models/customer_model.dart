@@ -1,6 +1,6 @@
 import 'package:apos_app/lib_exp.dart';
 
-class Customer {
+class CustomerModel {
   String? id;
   final String readableId;
   final String name;
@@ -8,7 +8,7 @@ class Customer {
   final String phone;
   final String address;
 
-  Customer({
+  CustomerModel({
     this.id,
     required this.readableId,
     required this.name,
@@ -17,8 +17,8 @@ class Customer {
     required this.address,
   });
 
-  factory Customer.fromJson(Map<String, dynamic> json, String id) {
-    return Customer(
+  factory CustomerModel.fromJson(Map<String, dynamic> json, String id) {
+    return CustomerModel(
       id: id,
       readableId: json['id'],
       name: json['name'],
@@ -39,7 +39,7 @@ class Customer {
   }
 }
 
-Customer tempCustomer(int index) => Customer(
+CustomerModel tempCustomer(int index) => CustomerModel(
       id: "#$index",
       readableId: "",
       name: "Client ${Consts.aToz[index]}",

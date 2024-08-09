@@ -28,9 +28,9 @@ class _NavProductsPageState extends State<NavProductsPage> {
     );
   }
 
-  Widget _listTile(Category category) {
-    final List<Product> products = CacheManager.products
-        .where((Product product) => category.id == product.categoryId)
+  Widget _listTile(CategoryModel category) {
+    final List<ProductModel> products = CacheManager.products
+        .where((ProductModel product) => category.id == product.categoryId)
         .toList();
     if (products.isEmpty) return emptyUI;
 
@@ -63,13 +63,14 @@ class _NavProductsPageState extends State<NavProductsPage> {
     );
   }
 
-  Widget _productItem(Product product) => SizedBox(
+  Widget _productItem(ProductModel product) => SizedBox(
         width: itemWidth,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Clickable(
-              onTap: () => context.push(ProductDetailsPage(product: product)),
+              onTap: () {},
+              // onTap: () => context.push(ProductDetailsPage(product: product)),
               radius: 16,
               child: Hero(
                 tag: product.readableId,

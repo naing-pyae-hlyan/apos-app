@@ -1,59 +1,62 @@
+import 'dart:math';
+
 import 'package:apos_app/lib_exp.dart';
 
-class Item {
+class ItemModel {
   String? id;
   final String readableId;
   final String name;
-  final double price;
-  final double totalPrice;
-  final int qty;
-  final String? categoryId;
-  final String? categoryName;
+  final double amount;
+  final double discount;
+  final int quantity;
 
-  Item({
+  ItemModel({
     this.id,
     required this.readableId,
     required this.name,
-    required this.price,
-    required this.totalPrice,
-    required this.qty,
-    required this.categoryId,
-    required this.categoryName,
+    required this.amount,
+    required this.discount,
+    required this.quantity,
   });
 
-  static Item addItem({
-    required Product product,
-    required int q,
-    required double tp,
-  }) =>
-      Item(
-        readableId: product.readableId,
-        name: product.name,
-        price: product.price,
-        categoryId: product.categoryId,
-        categoryName: product.categoryName,
-        totalPrice: tp,
-        qty: q,
-      );
+  // static ItemModel addItem({
+  //   required ProductModel product,
+  //   required int q,
+  //   required double tp,
+  // }) =>
+  //     ItemModel(
+  //       readableId: product.readableId,
+  //       name: product.name,
+  //       price: product.price,
+  //       categoryId: product.categoryId,
+  //       categoryName: product.categoryName,
+  //       totalPrice: tp,
+  //       qty: q,
+  //     );
 
-  factory Item.fromJson(Map<String, dynamic> json, String id) => Item(
+  factory ItemModel.fromJson(Map<String, dynamic> json, String id) => ItemModel(
         id: id,
-        readableId: json['id'],
+        readableId: json["id"],
         name: json["name"],
-        price: json["price"],
-        totalPrice: json["total_price"],
-        qty: json["qty"],
-        categoryId: json['category_id'],
-        categoryName: json["category_name"],
+        amount: json["amount"],
+        discount: json["discount"],
+        quantity: json["quantity"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": readableId,
         "name": name,
-        "price": price,
-        "total_price": totalPrice,
-        "qty": qty,
-        'category_id': categoryId,
-        'category_name': categoryName,
+        "amount": amount,
+        "discount": discount,
+        "quantity": quantity,
       };
 }
+
+ItemModel tempItem(int index) => ItemModel(
+      id: "#$index",
+      readableId: "",
+      name: "Item ${Consts.aToz[index]}",
+      amount: Random().nextInt(1000) + 10000,
+      discount: 0.0,
+      quantity: Random().nextInt(1000),
+    );

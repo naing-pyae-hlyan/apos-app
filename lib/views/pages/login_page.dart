@@ -1,5 +1,8 @@
 import 'package:apos_app/lib_exp.dart';
 
+const _userNameErrorKey = "user-name-error-key";
+const _passwordErrorKey = "password-error-key";
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -9,9 +12,10 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   late AuthBloc authBloc;
-  // late CategoryBloc categoryBloc;
+  late DbBloc dbBloc;
+  late ErrorBloc errorBloc;
 
-  final usernameTxtCtrl = TextEditingController();
+  final emailTxtCtrl = TextEditingController();
   final passwordTxtCtrl = TextEditingController();
   final usernameFn = FocusNode();
   final passwordFn = FocusNode();
@@ -20,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void _login() {
     authBloc.add(AuthEventLogin(
-      username: usernameTxtCtrl.text,
+      email: emailTxtCtrl.text,
       password: passwordTxtCtrl.text,
       rememberMe: _rememberMe,
     ));
@@ -29,10 +33,12 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     authBloc = context.read<AuthBloc>();
-    // categoryBloc = context.read<CategoryBloc>();
+    dbBloc = context.read<DbBloc>();
+    errorBloc = context.read<ErrorBloc>();
     super.initState();
     doAfterBuild(
       callback: () {
+        errorBloc.add(ErrorEventResert());
         usernameFn.requestFocus();
       },
     );
@@ -40,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
-    usernameTxtCtrl.dispose();
+    emailTxtCtrl.dispose();
     passwordTxtCtrl.dispose();
     usernameFn.dispose();
     passwordFn.dispose();
@@ -50,24 +56,25 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
+      backgroundColor: Consts.secondaryColor,
       body: Center(
         child: MyCard(
-          padding: const EdgeInsets.all(64),
+          padding: const EdgeInsets.all(32),
           child: SizedBox(
-            width: context.screenWidth * 0.6,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                myText("Welcome", fontSize: 48),
+                myText("Welcome", fontSize: 32),
                 verticalHeight64,
                 MyInputField(
-                  controller: usernameTxtCtrl,
+                  controller: emailTxtCtrl,
                   focusNode: usernameFn,
-                  hintText: "Username",
+                  hintText: "Email",
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
+                  errorKey: _userNameErrorKey,
                 ),
                 verticalHeight16,
                 MyPasswordInputField(
@@ -76,53 +83,50 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: "Password",
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.done,
+                  errorKey: _passwordErrorKey,
                   onSubmitted: (String str) {
                     _login();
                   },
                 ),
-                BlocBuilder<AuthBloc, AuthState>(
-                  builder: (_, state) {
-                    if (state is AuthStateFail) {
-                      return Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: errorText(state.error),
-                        ),
-                      );
-                    }
-                    return verticalHeight32;
-                  },
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: MyCheckBoxWithLabel(
-                    label: "Remember Me",
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    onSelected: (bool selected) {
-                      _rememberMe = selected;
-                    },
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: MyCheckBoxWithLabel(
+                      label: "Remember Me",
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      onSelected: (bool selected) {
+                        _rememberMe = selected;
+                      },
+                    ),
                   ),
                 ),
                 BlocConsumer<AuthBloc, AuthState>(
                   listener: (_, AuthState state) {
-                    if (state is AuthStateSuccess) {
-                      // categoryBloc.add(
-                      //   CategoryEventReadData(
-                      //     readSuccess: () {
-                      //       context.pushAndRemoveUntil(const HomePage());
-                      //     },
-                      //   ),
-                      // );
+                    if (state is AuthStateLoginSuccess) {
+                      dbBloc.add(DbEventGetProductsWithCategoryFromServer());
                     }
                     if (state is AuthStateFail) {
                       if (state.error.code == 1) {
                         usernameFn.requestFocus();
+                        errorBloc.add(
+                          ErrorEventSetError(
+                            errorKey: _userNameErrorKey,
+                            error: state.error,
+                          ),
+                        );
                         return;
                       }
 
                       if (state.error.code == 2) {
                         passwordFn.requestFocus();
+                        errorBloc.add(
+                          ErrorEventSetError(
+                            errorKey: _passwordErrorKey,
+                            error: state.error,
+                          ),
+                        );
                         return;
                       }
                     }

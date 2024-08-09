@@ -14,6 +14,7 @@ Future<void> main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => AuthBloc()),
+        BlocProvider(create: (_) => ErrorBloc()),
         BlocProvider(create: (_) => DbBloc()),
         BlocProvider(create: (_) => OrdersBloc()),
       ],

@@ -1,25 +1,27 @@
-class Category {
+class CategoryModel {
   String? id;
   final String readableId;
   final String name;
-  final bool hasSize;
-  final bool hasColor;
+  final List<String> sizes;
+  final List<int> colorHexs;
 
-  Category({
+  CategoryModel({
     this.id,
     required this.readableId,
     required this.name,
-    required this.hasSize,
-    required this.hasColor,
+    required this.sizes,
+    required this.colorHexs,
   });
 
-  factory Category.fromJson(Map<String, dynamic> json, String docId) {
-    return Category(
+  factory CategoryModel.fromJson(Map<String, dynamic> json, String docId) {
+    return CategoryModel(
       id: docId,
       readableId: json['id'],
       name: json['name'],
-      hasSize: json['has_size'] ?? false,
-      hasColor: json['has_color'] ?? false,
+      sizes:
+          json['sizes'] == null ? [] : List.from(json['sizes'].map((x) => x)),
+      colorHexs:
+          json['colors'] == null ? [] : List.from(json['colors'].map((x) => x)),
     );
   }
 
@@ -27,34 +29,34 @@ class Category {
     return {
       'id': readableId,
       'name': name,
-      'has_size': hasSize,
-      'has_color': hasColor,
+      'sizes': List.from(sizes.map((x) => x)),
+      'colors': List.from(colorHexs.map((x) => x)),
     };
   }
 
   @override
   bool operator ==(Object other) {
-    return other is Category && id == other.id;
+    return other is CategoryModel && id == other.id;
   }
 
   @override
   // ignore: unnecessary_overrides
   int get hashCode => super.hashCode;
 
-  static Category get allCategoriesValue => Category(
+  static CategoryModel get allCategoriesValue => CategoryModel(
         id: "all-category",
         readableId: "all-category",
         name: "All Category",
-        hasSize: false,
-        hasColor: false,
+        sizes: [],
+        colorHexs: [],
       );
 
-  static Category get selectCategoriesValue => Category(
+  static CategoryModel get selectCategoriesValue => CategoryModel(
         id: "select-category",
         readableId: "select-category",
         name: "Select Category",
-        hasSize: false,
-        hasColor: false,
+        sizes: [],
+        colorHexs: [],
       );
 
   bool get isDropdownTitle => id == "select-category" || id == "all-category";

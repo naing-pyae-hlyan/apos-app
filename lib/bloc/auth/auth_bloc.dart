@@ -12,11 +12,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthStateLoading());
     Future.delayed(const Duration(seconds: 1));
 
-    emit(AuthStateSuccess());
+    emit(AuthStateLoginSuccess());
     return;
 
-    
-    if (event.username.isEmpty) {
+    if (event.email.isEmpty) {
       await Future.delayed(const Duration(milliseconds: 500));
       emit(
         AuthStateFail(error: ErrorModel(message: "Enter username", code: 1)),
@@ -30,7 +29,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       return;
     }
-    if (event.username != "admin") {
+    if (event.email != "admin") {
       await Future.delayed(const Duration(milliseconds: 500));
       emit(
         AuthStateFail(error: ErrorModel(message: "User not found", code: 1)),
@@ -40,11 +39,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     if (event.rememberMe) {
       await SpHelper.rememberMe(
-        username: event.username,
+        username: event.email,
         password: event.password,
       );
     }
 
-    emit(AuthStateSuccess());
+    emit(AuthStateLoginSuccess());
   }
 }

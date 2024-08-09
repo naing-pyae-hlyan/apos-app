@@ -11,4 +11,4 @@ class AuthStateFail extends AuthState {
   AuthStateFail({required this.error});
 }
 
-class AuthStateSuccess extends AuthState {}
+class AuthStateLoginSuccess extends AuthState {}

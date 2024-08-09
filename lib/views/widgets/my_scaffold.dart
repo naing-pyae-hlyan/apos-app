@@ -2,12 +2,14 @@ import 'package:apos_app/lib_exp.dart';
 
 class MyScaffold extends StatelessWidget {
   final Widget body;
+  final Color? backgroundColor;
   final PreferredSizeWidget? appBar;
   final FloatingActionButton? fab;
   final EdgeInsetsGeometry? padding;
   const MyScaffold({
     super.key,
     required this.body,
+    this.backgroundColor,
     this.appBar,
     this.padding,
     this.fab,
@@ -20,7 +22,7 @@ class MyScaffold extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           appBar: appBar,
-          backgroundColor: Consts.scaffoldBackgroundColor,
+          backgroundColor: backgroundColor?? Consts.scaffoldBackgroundColor,
           body: Padding(
             padding: padding ?? const EdgeInsets.fromLTRB(24, 0, 24, 0),
             child: body,

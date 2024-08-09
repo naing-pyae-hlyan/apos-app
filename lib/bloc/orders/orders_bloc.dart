@@ -4,21 +4,21 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
   OrdersBloc() : super(OrdersStateInitial()) {
     on<OrdersEventAddItem>(_onItemAdd);
   }
-  final List<Item> _items = [];
-  List<Item> get items => _items;
+  final List<ItemModel> _items = [];
+  List<ItemModel> get items => _items;
 
   int get itemsQty {
     int qty = 0;
-    for (Item item in _items) {
-      qty += item.qty;
+    for (ItemModel item in _items) {
+      qty += item.quantity;
     }
     return qty;
   }
 
   int get itemsTotalPrice {
     int total = 0;
-    for (Item item in _items) {
-      total += item.totalPrice.round();
+    for (ItemModel item in _items) {
+      total += item.amount.round();
     }
     return total;
   }

@@ -30,7 +30,8 @@ String parseHexToProductColorName(int hex) {
   return result;
 }
 
-int parseProductColorNameToHex(String name) {
+int? parseProductColorNameToHex(String? name) {
+  if (name == null) return null;
   return ProductColors.values
       .firstWhere((ProductColors pc) => pc.name == name)
       .hex;

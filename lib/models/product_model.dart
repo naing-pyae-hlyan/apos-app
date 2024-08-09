@@ -1,6 +1,4 @@
-import 'package:apos_app/enum/product_colors.dart';
-
-class Product {
+class ProductModel {
   String? id;
   final String readableId;
   final String name;
@@ -13,12 +11,7 @@ class Product {
   final String? categoryName;
   final int topSalesCount;
 
-  //
-  final List<ProductColors> productColorsEnum;
-  int qty;
-  double totalPrice;
-
-  Product({
+  ProductModel({
     this.id,
     required this.readableId,
     required this.name,
@@ -30,21 +23,16 @@ class Product {
     required this.categoryId,
     required this.categoryName,
     required this.topSalesCount,
-
-    //
-    required this.productColorsEnum,
-    required this.qty,
-    required this.totalPrice,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json, String docId) {
-    return Product(
+  factory ProductModel.fromJson(Map<String, dynamic> json, String docId) {
+    return ProductModel(
       id: docId,
       readableId: json["id"],
       name: json['name'],
       base64Images: List.from(json["images"].map((x) => x)),
       description: json['description'],
-      price: (json['price'] as int).toDouble(),
+      price: json['price'],
       sizes:
           json['sizes'] == null ? [] : List.from(json['sizes'].map((x) => x)),
       hexColors:
@@ -52,11 +40,6 @@ class Product {
       categoryId: json['category_id'],
       categoryName: json["category_name"],
       topSalesCount: json["top_sales_count"] ?? 0,
-      productColorsEnum: json['colors'] == null
-          ? []
-          : List.from(json['colors'].map((x) => parseHexToProductColor(x))),
-      qty: 1,
-      totalPrice: (json['price'] as int).toDouble(),
     );
   }
 
@@ -77,7 +60,7 @@ class Product {
 
   @override
   bool operator ==(Object other) {
-    return other is Product && id == other.id;
+    return other is ProductModel && id == other.id;
   }
 
   @override

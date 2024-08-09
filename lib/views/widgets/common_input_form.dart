@@ -29,7 +29,7 @@ class MyInputField extends StatelessWidget {
     this.textInputAction,
     this.inputFormatters,
     this.obscure = false,
-    this.errorKey,
+    required this.errorKey,
     this.maxLines = 1,
   });
 
@@ -57,6 +57,8 @@ class MyInputField extends StatelessWidget {
               horizontal: 24,
               vertical: 8,
             ),
+            filled: true,
+            fillColor: Consts.inputFieldPlaceholderColor,
             border: outlineInputBorder,
             errorBorder: outlineInputBorder,
             enabledBorder: outlineInputBorder,
@@ -71,29 +73,28 @@ class MyInputField extends StatelessWidget {
             suffixIcon: suffixIcon,
           ),
         ),
-        // Consumer<InputErrorCtrl>(
-        //   builder: (_, err, __) {
-        //     if (errorKey != null) {
-        //       return Padding(
-        //         padding: const EdgeInsets.only(left: 4, top: 4, right: 4),
-        //         child: myText(
-        //           err.getError(errorKey!).error,
-        //           color: err.getError(errorKey!).color ?? Colors.red,
-        //         ),
-        //       );
-        //     }
+        BlocBuilder<ErrorBloc, ErrorState>(
+          builder: (_, state) {
+            if (state is ErrorStateHasError) {
+              if (state.errorKey == errorKey) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: errorText(state.error.message),
+                );
+              }
+            }
 
-        //     return emptyUI;
-        //   },
-        // ),
+            return emptyUI;
+          },
+        ),
       ],
     );
   }
 
   OutlineInputBorder get outlineInputBorder => OutlineInputBorder(
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(16),
         borderSide: const BorderSide(
-          color: Consts.primaryColor,
+          color: Consts.inputFieldPlaceholderColor,
         ),
       );
 }
@@ -118,7 +119,7 @@ class MyPasswordInputField extends StatefulWidget {
     this.onSubmitted,
     this.keyboardType,
     this.textInputAction,
-    this.errorKey,
+    required this.errorKey,
   });
 
   @override

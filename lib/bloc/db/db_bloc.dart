@@ -12,13 +12,13 @@ class DbBloc extends Bloc<DbEvent, DbState> {
   ) async {
     emit(DbStateLoading());
     await FFirestoreUtils.categoryCollection.get().then(
-      (QuerySnapshot<Category> snapshot) async {
+      (QuerySnapshot<CategoryModel> snapshot) async {
         CacheManager.categories.clear();
         for (var doc in snapshot.docs) {
           CacheManager.categories.add(doc.data());
         }
         await FFirestoreUtils.productCollection.get().then(
-          (QuerySnapshot<Product> snapshot2) {
+          (QuerySnapshot<ProductModel> snapshot2) {
             CacheManager.products.clear();
             for (var doc in snapshot2.docs) {
               CacheManager.products.add(doc.data());
