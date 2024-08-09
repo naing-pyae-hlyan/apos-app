@@ -1,3 +1,5 @@
+import 'package:apos_app/lib_exp.dart';
+
 sealed class AuthEvent {}
 
 class AuthEventLogin extends AuthEvent {
@@ -9,4 +11,9 @@ class AuthEventLogin extends AuthEvent {
     required this.password,
     required this.rememberMe,
   });
+}
+
+class AuthEventRegister extends AuthEvent {
+  CustomerModel customer;
+  AuthEventRegister({required this.customer});
 }

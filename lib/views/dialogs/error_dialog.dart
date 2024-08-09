@@ -31,8 +31,13 @@ class _ErrorDialog extends StatelessWidget {
       backgroundColor: Colors.white,
       surfaceTintColor: Colors.white,
       shadowColor: Consts.secondaryColor,
-      title: myTitle(title),
-      content: myText(description, maxLines: 4),
+      icon: const Icon(
+        Icons.error,
+        color: Colors.red,
+        size: 96,
+      ),
+      title: myTitle(title, textAlign: TextAlign.center),
+      content: myText(description, maxLines: 4, textAlign: TextAlign.center),
       actions: [
         TextButton(
           onPressed: () {

@@ -1,4 +1,8 @@
 flutter 3.22.0
+
+09/08/2024 (0.0.3)
+1. NEW: Register is implemented.
+
 04/08/2024 (0.0.2)
 1. WIP: AddToCard.
 

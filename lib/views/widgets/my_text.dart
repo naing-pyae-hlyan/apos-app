@@ -49,8 +49,8 @@ Widget errorText<T>(T value) {
   // if (value is ErrorModel) error = value.message;
 
   return myText(
-    "ERROR MESSAGE : $error",
+    error,
     color: Consts.errorColor,
-    fontWeight: FontWeight.w800,
+    // fontWeight: FontWeight.w800,
   );
 }

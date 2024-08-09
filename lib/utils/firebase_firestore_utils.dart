@@ -29,10 +29,10 @@ class FFirestoreUtils {
           );
 
   // Get [customer] table
-  // static CollectionReference<Customer> get customerCollection =>
-  //     _database.collection("customer").withConverter<Customer>(
-  //           fromFirestore: (snapshot, _) =>
-  //               Customer.fromJson(snapshot.data()!, snapshot.id),
-  //           toFirestore: (product, _) => product.toJson(),
-  //         );
+  static CollectionReference<CustomerModel> get customerCollection =>
+      _database.collection("customer").withConverter<CustomerModel>(
+            fromFirestore: (snapshot, _) =>
+                CustomerModel.fromJson(snapshot.data()!, snapshot.id),
+            toFirestore: (customer, _) => customer.toJson(),
+          );
 }

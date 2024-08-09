@@ -1,11 +1,10 @@
-import 'package:apos_app/lib_exp.dart';
-
 class CustomerModel {
   String? id;
   final String readableId;
   final String name;
   final String email;
   final String phone;
+  final String password;
   final String address;
 
   CustomerModel({
@@ -14,6 +13,7 @@ class CustomerModel {
     required this.name,
     required this.email,
     required this.phone,
+    required this.password,
     required this.address,
   });
 
@@ -24,6 +24,7 @@ class CustomerModel {
       name: json['name'],
       email: json['email'],
       phone: json['phone'],
+      password: json['password'],
       address: json['address'],
     );
   }
@@ -34,16 +35,8 @@ class CustomerModel {
       'name': name,
       'email': email,
       'phone': phone,
+      'password': password,
       'address': address,
     };
   }
 }
-
-CustomerModel tempCustomer(int index) => CustomerModel(
-      id: "#$index",
-      readableId: "",
-      name: "Client ${Consts.aToz[index]}",
-      email: "mail@example.com",
-      phone: "09123456789",
-      address: "Enim excepteur anim nostrud consequat.",
-    );

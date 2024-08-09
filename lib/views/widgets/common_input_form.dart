@@ -39,7 +39,7 @@ class MyInputField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        if (title != null) myText(title, fontWeight: FontWeight.w800),
+        if (title != null) myText(title),
         if (title != null) verticalHeight8,
         TextField(
           controller: controller,

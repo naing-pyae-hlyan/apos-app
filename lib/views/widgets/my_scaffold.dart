@@ -22,7 +22,7 @@ class MyScaffold extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           appBar: appBar,
-          backgroundColor: backgroundColor?? Consts.scaffoldBackgroundColor,
+          backgroundColor: backgroundColor ?? Consts.scaffoldBackgroundColor,
           body: Padding(
             padding: padding ?? const EdgeInsets.fromLTRB(24, 0, 24, 0),
             child: body,
@@ -33,6 +33,18 @@ class MyScaffold extends StatelessWidget {
     );
   }
 }
+
+AppBar myAppBar({
+  String title = "Back",
+}) =>
+    AppBar(
+      backgroundColor: Consts.scaffoldBackgroundColor,
+      surfaceTintColor: Consts.scaffoldBackgroundColor,
+      automaticallyImplyLeading: true,
+      title: myTitle(title, fontWeight: FontWeight.w600),
+      centerTitle: false,
+      elevation: 16,
+    );
 
 class MyScaffoldDataGridView<M> extends StatelessWidget {
   final Widget? header;
