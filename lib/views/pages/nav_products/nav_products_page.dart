@@ -108,8 +108,7 @@ class _NavProductsPageState extends State<NavProductsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Clickable(
-              onTap: () {},
-              // onTap: () => context.push(ProductDetailsPage(product: product)),
+              onTap: () => context.push(ProductDetailsPage(product: product)),
               radius: 12,
               child: Hero(
                 tag: product.readableId,

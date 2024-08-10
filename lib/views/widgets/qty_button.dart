@@ -45,40 +45,29 @@ class _QtyButtonState extends State<QtyButton> {
       children: [
         myText("Quantity"),
         verticalHeight8,
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Consts.primaryColor,
-            ),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          // width: 120,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CircleAvatar(
+              backgroundColor: Consts.primaryColor,
+              child: IconButton(
                 onPressed: descreased,
-                icon: const Icon(Icons.remove, color: Consts.primaryColor),
-                color: Consts.primaryColor,
+                icon: const Icon(Icons.remove, color: Colors.white),
               ),
-              Container(
-                width: 100,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Consts.secondaryColor),
-                  color: Colors.white,
-                ),
-                alignment: Alignment.center,
-                child: myTitle('$_qty'),
-              ),
-              IconButton(
+            ),
+            SizedBox(
+              width: 48,
+              child: myText("$_qty", textAlign: TextAlign.center),
+            ),
+            CircleAvatar(
+              backgroundColor: Consts.primaryColor,
+              child: IconButton(
                 onPressed: increased,
-                icon: const Icon(Icons.add, color: Consts.primaryColor),
-                color: Consts.primaryColor,
+                icon: const Icon(Icons.add, color: Colors.white),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );

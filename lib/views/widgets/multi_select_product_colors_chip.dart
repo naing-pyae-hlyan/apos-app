@@ -1,12 +1,12 @@
 import 'package:apos_app/lib_exp.dart';
 
 class MultiSelectProductColors extends StatefulWidget {
-  final List<ProductColors> productColors;
+  final List<int> hexColors;
   final List<int> oldHexColors;
-  final Function(String) onSelectedColors;
+  final Function(int?) onSelectedColors;
   const MultiSelectProductColors({
     super.key,
-    required this.productColors,
+    required this.hexColors,
     required this.oldHexColors,
     required this.onSelectedColors,
   });
@@ -17,29 +17,36 @@ class MultiSelectProductColors extends StatefulWidget {
 }
 
 class _MultiSelectProductColorsState extends State<MultiSelectProductColors> {
-  final List<String> selectedColorNames = [];
+  final List<int> selectedColors = [];
 
   List<Widget> _buildColorList() {
     List<Widget> choices = [];
-    for (final ProductColors productColor in widget.productColors) {
+    for (final int productColor in widget.hexColors) {
       choices.add(
         ChoiceChip(
-          avatar: CircleAvatar(
-            backgroundColor: Color(productColor.hex),
+          label: SizedBox(
+            width: 12,
+            height: 12,
+            child: CircleAvatar(
+              backgroundColor: Color(productColor),
+            ),
           ),
-          checkmarkColor: Colors.white,
-          label: myText(productColor.name),
-          selected: selectedColorNames.contains(productColor.name),
+          checkmarkColor: Consts.primaryColor,
+          selected: selectedColors.contains(productColor),
           onSelected: (bool selected) {
             setState(() {
-              if (selectedColorNames.contains(productColor.name)) {
-                selectedColorNames.remove(productColor.name);
+              if (selectedColors.contains(productColor)) {
+                selectedColors.remove(productColor);
               } else {
-                selectedColorNames.clear();
-                selectedColorNames.add(productColor.name);
+                selectedColors.clear();
+                selectedColors.add(productColor);
               }
             });
-            widget.onSelectedColors(selectedColorNames.first);
+            if (selectedColors.isEmpty) {
+              widget.onSelectedColors(null);
+            } else {
+              widget.onSelectedColors(selectedColors.first);
+            }
           },
         ),
       );
@@ -49,23 +56,15 @@ class _MultiSelectProductColorsState extends State<MultiSelectProductColors> {
 
   @override
   void initState() {
-    selectedColorNames.clear();
-    for (final int hexValue in widget.oldHexColors) {
-      selectedColorNames.add(parseHexToProductColorName(hexValue));
-    }
+    selectedColors.clear();
+    selectedColors.addAll(widget.oldHexColors);
     super.initState();
   }
 
   @override
   void dispose() {
-    selectedColorNames.clear();
+    selectedColors.clear();
     super.dispose();
-  }
-
-  @override
-  void didUpdateWidget(covariant MultiSelectProductColors oldWidget) {
-    selectedColorNames.clear();
-    super.didUpdateWidget(oldWidget);
   }
 
   @override

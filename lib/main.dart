@@ -17,6 +17,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => ErrorBloc()),
         BlocProvider(create: (_) => DbBloc()),
         BlocProvider(create: (_) => OrdersBloc()),
+        BlocProvider(create: (_) => CartBloc()),
       ],
       child: const MainApp(),
     ),

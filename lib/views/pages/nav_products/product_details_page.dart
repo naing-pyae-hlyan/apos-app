@@ -14,29 +14,29 @@ class ProductDetailsPage extends StatefulWidget {
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   final ValueNotifier<num> _itemPricingListener = ValueNotifier(0.0);
   int _itemQty = 1;
-  String? _selectedClothSize;
-  String? _selectedShoesize;
-  String? _selectedColor;
-  late OrdersBloc itemsBloc;
+  String? _selectedType;
+  int? _selectedColor;
+  late CartBloc cartBloc;
 
   void addToCart() {
-    // final item = ItemModel.addItem(
-    //   product: widget.product,
-    //   q: _itemQty,
-    //   tp: _itemPricingListener.value,
-    //   color: parseProductColorNameToHex(_selectedColor),
-    //   sizeForCloth: _selectedClothSize,
-    //   sizeForShoe: _selectedShoesize,
-    // );
-    // itemsBloc.add(OrdersEventAddItem(item: item));
+    final item = ItemModel(
+      id: widget.product.id,
+      name: widget.product.name,
+      price: widget.product.price,
+      types: _selectedType == null ? [] : [_selectedType!],
+      colors: _selectedColor == null ? [] : [_selectedColor!],
+      qty: _itemQty,
+      totalAmount: _itemPricingListener.value,
+    );
 
+    cartBloc.add(CartEventAddItem(item: item));
     // Close the ProductDetailsPage
     context.pop();
   }
 
   @override
   void initState() {
-    itemsBloc = context.read<OrdersBloc>();
+    cartBloc = context.read<CartBloc>();
     super.initState();
     doAfterBuild(callback: () {
       _itemPricingListener.value = widget.product.price;
@@ -67,7 +67,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               base64Images: widget.product.base64Images,
               heroTag: widget.product.readableId,
             ),
-            verticalHeight24,
+            verticalHeight16,
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -81,25 +81,31 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 myText("Shopping", color: Consts.primaryColor),
               ],
             ),
-            verticalHeight16,
+            verticalHeight8,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: myTitle(widget.product.name),
-            ),
-            verticalHeight4,
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: myText(
-                widget.product.description,
-                color: Consts.descriptionColor,
-                maxLines: 100,
+              child: myTitle(
+                widget.product.name,
+                fontWeight: FontWeight.w600,
               ),
             ),
-            verticalHeight16,
+            if (widget.product.description?.isNotEmpty == true) ...[
+              verticalHeight4,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: myText(
+                  widget.product.description,
+                  color: Consts.descriptionColor,
+                  maxLines: 100,
+                ),
+              ),
+            ],
+            verticalHeight8,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: myTitle(
                 widget.product.price.toCurrencyFormat(countryIso: "MMK"),
+                fontWeight: FontWeight.w700,
               ),
             ),
             const Divider(thickness: 0.5),
@@ -110,25 +116,25 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 child: MultiSelectProductSizes(
                   sizes: widget.product.sizes,
                   oldSizes: const [],
-                  onSelectedSize: (String selectedSize) {
-                    _selectedClothSize = selectedSize;
+                  onSelectedSize: (String? selectedSize) {
+                    _selectedType = selectedSize;
                   },
                 ),
               ),
             ],
-            // if (widget.product.hexColors.isNotEmpty) ...[
-            //   verticalHeight8,
-            //   Padding(
-            //     padding: const EdgeInsets.symmetric(horizontal: 24),
-            //     child: MultiSelectProductColors(
-            //       productColors: widget.product.productColorsEnum,
-            //       oldHexColors: const [],
-            //       onSelectedColors: (String selectedColor) {
-            //         _selectedColor = selectedColor;
-            //       },
-            //     ),
-            //   ),
-            // ],
+            if (widget.product.hexColors.isNotEmpty) ...[
+              verticalHeight8,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: MultiSelectProductColors(
+                  hexColors: widget.product.hexColors,
+                  oldHexColors: const [],
+                  onSelectedColors: (int? selectedColor) {
+                    _selectedColor = selectedColor;
+                  },
+                ),
+              ),
+            ],
             verticalHeight24,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -140,24 +146,29 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               ),
             ),
             verticalHeight24,
-            // Container(
-            //   padding: const EdgeInsets.all(16),
-            //   color: Consts.secondaryColor,
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: [
-            //       myTitle("Total Payable", color: Consts.descriptionColor),
-            //       ValueListenableBuilder(
-            //         valueListenable: _itemPricingListener,
-            //         builder: (_, double value, ___) {
-            //           return myTitle(
-            //             "$value".toCurrencyFormat(countryIso: "MMK"),
-            //           );
-            //         },
-            //       ),
-            //     ],
-            //   ),
-            // ),
+            Container(
+              padding: const EdgeInsets.all(16),
+              color: Consts.secondaryColor,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  myTitle(
+                    "Total Payable",
+                    color: Consts.descriptionColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  ValueListenableBuilder<num>(
+                    valueListenable: _itemPricingListener,
+                    builder: (_, num value, ___) {
+                      return myTitle(
+                        "$value".toCurrencyFormat(countryIso: "MMK"),
+                        fontWeight: FontWeight.w700,
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
             verticalHeight24,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),

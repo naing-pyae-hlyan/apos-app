@@ -17,6 +17,7 @@ class Clickable extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(radius),
+      splashColor: Consts.secondaryColor,
       onTap: onTap,
       child: child,
     );

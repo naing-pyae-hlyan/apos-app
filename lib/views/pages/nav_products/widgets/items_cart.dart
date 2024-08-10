@@ -8,19 +8,19 @@ class ItemCart extends StatefulWidget {
 }
 
 class _ItemCartState extends State<ItemCart> {
-  late OrdersBloc itemsBloc;
+  late CartBloc cartBloc;
 
   @override
   void initState() {
-    itemsBloc = context.read<OrdersBloc>();
+    cartBloc = context.read<CartBloc>();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<OrdersBloc, OrdersState>(
+    return BlocBuilder<CartBloc, CartState>(
       builder: (_, state) {
-        if (itemsBloc.items.isEmpty) {
+        if (cartBloc.items.isEmpty) {
           return emptyUI;
         }
 
@@ -39,7 +39,7 @@ class _ItemCartState extends State<ItemCart> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     myTitle("Qty", color: Colors.white),
-                    myText("${itemsBloc.itemsQty}", color: Colors.white),
+                    myText("${cartBloc.totalItemsQty}", color: Colors.white),
                   ],
                 ),
                 Column(
@@ -48,7 +48,7 @@ class _ItemCartState extends State<ItemCart> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     myTitle("Total", color: Colors.white),
-                    myText("${itemsBloc.itemsTotalPrice}".toCurrencyFormat(),
+                    myText("${cartBloc.totalItemsAmount}".toCurrencyFormat(),
                         color: Colors.white),
                   ],
                 ),

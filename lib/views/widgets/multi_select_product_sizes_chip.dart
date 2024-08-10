@@ -3,7 +3,7 @@ import 'package:apos_app/lib_exp.dart';
 class MultiSelectProductSizes extends StatefulWidget {
   final List<String> sizes;
   final List<String> oldSizes;
-  final Function(String) onSelectedSize;
+  final Function(String?) onSelectedSize;
   const MultiSelectProductSizes({
     super.key,
     required this.sizes,
@@ -35,7 +35,11 @@ class _MultiSelectProductSizesState extends State<MultiSelectProductSizes> {
                 selectedSizes.add(size);
               }
             });
-            widget.onSelectedSize(selectedSizes.first);
+            if (selectedSizes.isEmpty) {
+              widget.onSelectedSize(null);
+            } else {
+              widget.onSelectedSize(selectedSizes.first);
+            }
           },
         ),
       );
@@ -69,7 +73,7 @@ class _MultiSelectProductSizesState extends State<MultiSelectProductSizes> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        myText("Sizes"),
+        myText("Types"),
         verticalHeight4,
         Wrap(
           spacing: 8,
