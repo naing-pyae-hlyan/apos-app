@@ -26,12 +26,12 @@ class ProductModel {
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json, String docId) {
-    return ProductModel(
+    var product = ProductModel(
       id: docId,
       readableId: json["id"],
       name: json['name'],
       base64Images: List.from(json["images"].map((x) => x)),
-      description: json['description'],
+      description: (json['description'] ?? "").toString().replaceFirst("-", ""),
       price: json['price'],
       sizes:
           json['sizes'] == null ? [] : List.from(json['sizes'].map((x) => x)),
@@ -41,6 +41,8 @@ class ProductModel {
       categoryName: json["category_name"],
       topSalesCount: json["top_sales_count"] ?? 0,
     );
+    product.sizes.removeWhere((String size) => size == "-" || size.isEmpty);
+    return product;
   }
 
   Map<String, dynamic> toJson() {

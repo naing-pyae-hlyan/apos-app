@@ -38,7 +38,11 @@ class _ItemCartState extends State<ItemCart> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    myTitle("Qty", color: Colors.white),
+                    myText(
+                      "Qty",
+                      color: Colors.white,
+                      fontWeight: FontWeight.w800,
+                    ),
                     myText("${cartBloc.totalItemsQty}", color: Colors.white),
                   ],
                 ),
@@ -47,17 +51,24 @@ class _ItemCartState extends State<ItemCart> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    myTitle("Total", color: Colors.white),
+                    myText(
+                      "Total",
+                      color: Colors.white,
+                      fontWeight: FontWeight.w800,
+                    ),
                     myText("${cartBloc.totalItemsAmount}".toCurrencyFormat(),
                         color: Colors.white),
                   ],
                 ),
-                IconButton(
-                  onPressed: () {},
-                  highlightColor: Colors.black12,
-                  icon: const Icon(
-                    Icons.shopping_cart,
-                    color: Colors.white,
+                Hero(
+                  tag: heroTagCart,
+                  child: IconButton(
+                    onPressed: () => context.push(const OrderSummaryPage()),
+                    highlightColor: Colors.black12,
+                    icon: const Icon(
+                      Icons.shopping_cart,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ],

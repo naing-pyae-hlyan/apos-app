@@ -1,4 +1,5 @@
 import 'package:apos_app/lib_exp.dart';
+import 'package:flutter/material.dart';
 
 class MyButton extends StatelessWidget {
   final String label;
@@ -56,3 +57,19 @@ class MyButton extends StatelessWidget {
     );
   }
 }
+
+FloatingActionButton floatingActionButton({
+  required Function() onPressed,
+  required IconData iconData,
+  dynamic heroTag,
+}) =>
+    FloatingActionButton(
+      onPressed: onPressed,
+      heroTag: heroTag,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+      backgroundColor: Consts.primaryColor,
+      child: Icon(
+        iconData,
+        color: Colors.white,
+      ),
+    );

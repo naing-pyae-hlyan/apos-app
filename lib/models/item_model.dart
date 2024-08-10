@@ -1,3 +1,5 @@
+import 'package:apos_app/lib_exp.dart';
+
 class ItemModel {
   String? id; // product_id
   final String name;
@@ -6,6 +8,7 @@ class ItemModel {
   List<int> colors;
   int qty;
   num totalAmount;
+  ProductModel? product;
 
   ItemModel({
     this.id,
@@ -15,6 +18,7 @@ class ItemModel {
     required this.colors,
     required this.qty,
     required this.totalAmount,
+    required this.product,
   });
 
   factory ItemModel.fromJson(Map<String, dynamic> json, String id) => ItemModel(
@@ -28,6 +32,7 @@ class ItemModel {
             : List.from(json["colors"].map((x) => x)),
         qty: json["qty"],
         totalAmount: json["total_amount"],
+        product: null,
       );
 
   Map<String, dynamic> toJson() => {

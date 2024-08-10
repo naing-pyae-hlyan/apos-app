@@ -15,17 +15,11 @@ class _SplashPageState extends State<SplashPage> {
   Future<void> _checkCredentials() async {
     final username = await SpHelper.username;
     final password = await SpHelper.password;
-
-    // if (username.isNotEmpty && password.isNotEmpty) {
     authBloc.add(AuthEventLogin(
       email: username,
       password: password,
       rememberMe: true,
     ));
-    // return;
-    // }
-
-    // if (mounted) context.pushAndRemoveUntil(const LoginPage());
   }
 
   @override

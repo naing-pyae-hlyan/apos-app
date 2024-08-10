@@ -1,5 +1,7 @@
 import 'package:apos_app/lib_exp.dart';
 
+const heroTagCart = "hero-tag-cart";
+
 class Consts {
   static const appName = "aPOS";
 
@@ -78,6 +80,7 @@ const verticalHeight24 = SizedBox(height: 24);
 const verticalHeight32 = SizedBox(height: 32.0);
 const verticalHeight48 = SizedBox(height: 48.0);
 const verticalHeight64 = SizedBox(height: 64.0);
+const verticalHeight128 = SizedBox(height: 128.0);
 
 const horizontalWidth4 = SizedBox(width: 4.0);
 const horizontalWidth8 = SizedBox(width: 8.0);

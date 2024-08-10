@@ -27,6 +27,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       colors: _selectedColor == null ? [] : [_selectedColor!],
       qty: _itemQty,
       totalAmount: _itemPricingListener.value,
+      product: widget.product,
     );
 
     cartBloc.add(CartEventAddItem(item: item));
@@ -49,12 +50,17 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       appBar: AppBar(
         automaticallyImplyLeading: true,
         title: myTitle(widget.product.name),
-        elevation: 0,
+        elevation: 16,
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         shadowColor: Consts.secondaryColor,
       ),
       padding: EdgeInsets.zero,
+      fab: floatingActionButton(
+        onPressed: addToCart,
+        iconData: Icons.add_shopping_cart,
+        heroTag: heroTagCart,
+      ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
@@ -83,7 +89,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             ),
             verticalHeight8,
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: myTitle(
                 widget.product.name,
                 fontWeight: FontWeight.w600,
@@ -92,7 +98,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             if (widget.product.description?.isNotEmpty == true) ...[
               verticalHeight4,
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: myText(
                   widget.product.description,
                   color: Consts.descriptionColor,
@@ -102,17 +108,18 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             ],
             verticalHeight8,
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: myTitle(
                 widget.product.price.toCurrencyFormat(countryIso: "MMK"),
                 fontWeight: FontWeight.w700,
               ),
             ),
+            verticalHeight8,
             const Divider(thickness: 0.5),
             if (widget.product.sizes.isNotEmpty) ...[
               verticalHeight8,
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: MultiSelectProductSizes(
                   sizes: widget.product.sizes,
                   oldSizes: const [],
@@ -125,7 +132,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             if (widget.product.hexColors.isNotEmpty) ...[
               verticalHeight8,
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: MultiSelectProductColors(
                   hexColors: widget.product.hexColors,
                   oldHexColors: const [],
@@ -135,9 +142,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 ),
               ),
             ],
-            verticalHeight24,
+            verticalHeight8,
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: QtyButton(
                 onQtyChanged: (int qty) {
                   _itemQty = qty;
@@ -169,17 +176,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 ],
               ),
             ),
-            verticalHeight24,
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: MyButton(
-                label: "Add to cart",
-                icon: Icons.shopping_cart,
-                fitWidth: true,
-                onPressed: addToCart,
-              ),
-            ),
-            verticalHeight24,
+            verticalHeight128,
           ],
         ),
       ),

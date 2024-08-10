@@ -3,9 +3,11 @@ import 'package:apos_app/lib_exp.dart';
 class QtyButton extends StatefulWidget {
   final int? qty;
   final Function(int) onQtyChanged;
+  final bool needTitle;
   const QtyButton({
     super.key,
     this.qty,
+    this.needTitle = true,
     required this.onQtyChanged,
   });
 
@@ -39,37 +41,50 @@ class _QtyButtonState extends State<QtyButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
+    final buttons = Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        myText("Quantity"),
-        verticalHeight8,
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            CircleAvatar(
-              backgroundColor: Consts.primaryColor,
-              child: IconButton(
-                onPressed: descreased,
-                icon: const Icon(Icons.remove, color: Colors.white),
-              ),
+        SizedBox(
+          width: 28,
+          height: 28,
+          child: CircleAvatar(
+            backgroundColor: Consts.primaryColor,
+            child: Clickable(
+              onTap: descreased,
+              child: const Icon(Icons.remove, color: Colors.white),
             ),
-            SizedBox(
-              width: 48,
-              child: myText("$_qty", textAlign: TextAlign.center),
+          ),
+        ),
+        SizedBox(
+          width: 48,
+          child: myText("$_qty", textAlign: TextAlign.center),
+        ),
+        SizedBox(
+          width: 28,
+          height: 28,
+          child: CircleAvatar(
+            backgroundColor: Consts.primaryColor,
+            child: Clickable(
+              onTap: increased,
+              child: const Icon(Icons.add, color: Colors.white),
             ),
-            CircleAvatar(
-              backgroundColor: Consts.primaryColor,
-              child: IconButton(
-                onPressed: increased,
-                icon: const Icon(Icons.add, color: Colors.white),
-              ),
-            ),
-          ],
+          ),
         ),
       ],
     );
+    if (widget.needTitle) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          myText("Quantity"),
+          verticalHeight8,
+          buttons,
+        ],
+      );
+    }
+
+    return buttons;
   }
 }

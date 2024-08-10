@@ -12,3 +12,7 @@ class CartStateFail extends CartState {
 }
 
 class CartStateAddItemSuccess extends CartState {}
+
+class CartStateRemoveItemSuccess extends CartState {}
+
+class CartStateEditChangeItemQtySuccess extends CartState {}
