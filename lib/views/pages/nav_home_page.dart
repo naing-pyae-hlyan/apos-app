@@ -21,47 +21,58 @@ class _NavHomePageState extends State<NavHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: switch (_currentPage) {
-        NavHomeEnum.products => const NavProductsPage(),
-        NavHomeEnum.orders => const NavOrdersPage(),
-        NavHomeEnum.noti => const NavNotiPage(),
-        NavHomeEnum.account => const NavAccountPage(),
-      },
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        surfaceTintColor: Colors.white,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _navIconButton(
-              icon: Icons.dashboard,
-              label: 'Home',
-              isActive: _currentPage == NavHomeEnum.products,
-              onTap: () => _onDidChangedNavBar(NavHomeEnum.products),
-            ),
-            _navIconButton(
-              icon: Icons.receipt,
-              label: 'Orders',
-              isActive: _currentPage == NavHomeEnum.orders,
-              onTap: () => _onDidChangedNavBar(NavHomeEnum.orders),
-            ),
-            _navIconButton(
-              icon: Icons.notifications,
-              label: 'Noti',
-              isActive: _currentPage == NavHomeEnum.noti,
-              onTap: () => _onDidChangedNavBar(NavHomeEnum.noti),
-            ),
-            _navIconButton(
-              icon: Icons.person,
-              label: 'Account',
-              isActive: _currentPage == NavHomeEnum.account,
-              onTap: () => _onDidChangedNavBar(NavHomeEnum.account),
-            ),
-          ],
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        Scaffold(
+          body: switch (_currentPage) {
+            NavHomeEnum.products => const NavProductsPage(),
+            NavHomeEnum.orders => const NavOrdersPage(),
+            NavHomeEnum.noti => const NavNotiPage(),
+            NavHomeEnum.account => const NavAccountPage(),
+          },
         ),
-      ),
+        Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(32.0),
+          ),
+          margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+          elevation: 16,
+          surfaceTintColor: Colors.white,
+          color: Colors.white,
+          shadowColor: Consts.secondaryColor,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _navIconButton(
+                icon: Icons.dashboard,
+                label: 'Home',
+                isActive: _currentPage == NavHomeEnum.products,
+                onTap: () => _onDidChangedNavBar(NavHomeEnum.products),
+              ),
+              _navIconButton(
+                icon: Icons.receipt,
+                label: 'Orders',
+                isActive: _currentPage == NavHomeEnum.orders,
+                onTap: () => _onDidChangedNavBar(NavHomeEnum.orders),
+              ),
+              _navIconButton(
+                icon: Icons.notifications,
+                label: 'Noti',
+                isActive: _currentPage == NavHomeEnum.noti,
+                onTap: () => _onDidChangedNavBar(NavHomeEnum.noti),
+              ),
+              _navIconButton(
+                icon: Icons.person,
+                label: 'Account',
+                isActive: _currentPage == NavHomeEnum.account,
+                onTap: () => _onDidChangedNavBar(NavHomeEnum.account),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -75,7 +86,8 @@ class _NavHomePageState extends State<NavHomePage> {
         isSelected: isActive,
         icon: Icon(
           icon,
-          size: isActive ? 36 : 24,
+          size: isActive ? 24 : 18,
+          shadows: const [Shadow(color: Consts.secondaryColor, blurRadius: 16)],
           color: isActive
               ? Consts.primaryColor
               : Consts.primaryColor.withOpacity(0.45),

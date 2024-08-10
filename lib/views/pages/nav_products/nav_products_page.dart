@@ -15,21 +15,29 @@ class _NavProductsPageState extends State<NavProductsPage> {
   Widget build(BuildContext context) {
     itemWidth = context.screenWidth * 0.3 - 8;
     return MyScaffold(
-      appBar: const ItemsAppBar(),
-      body: Column(
+      padding: EdgeInsets.zero,
+      body: Stack(
+        alignment: Alignment.topCenter,
         children: [
-          verticalHeight16,
-          Expanded(
-            child: ListView.separated(
-              shrinkWrap: true,
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (_, index) {
-                return _listTile(CacheManager.categories[index]);
-              },
-              separatorBuilder: (_, __) => verticalHeight4,
-              itemCount: CacheManager.categories.length,
+          SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (_, index) {
+                    return _listTile(CacheManager.categories[index]);
+                  },
+                  separatorBuilder: (_, __) => verticalHeight8,
+                  itemCount: CacheManager.categories.length,
+                ),
+                verticalHeight64,
+                verticalHeight8,
+              ],
             ),
           ),
+          const ItemCart(),
         ],
       ),
     );
@@ -41,30 +49,56 @@ class _NavProductsPageState extends State<NavProductsPage> {
         .toList();
     if (products.isEmpty) return emptyUI;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Flexible(
-              child: myTitle(category.name, maxLines: 2),
-            ),
-            horizontalWidth4,
-            myText("(${products.length})"),
-          ],
-        ),
-        verticalHeight8,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: List.generate(
-            products.take(3).length,
-            (index) => _productItem(products[index]),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          verticalHeight16,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              horizontalWidth4,
+              Flexible(
+                child: myTitle(category.name, maxLines: 2),
+              ),
+              horizontalWidth4,
+              myText("(${products.length})"),
+            ],
           ),
-        ),
-      ],
+          verticalHeight8,
+          MyCard(
+            cardColor: Consts.secondaryColor,
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: List.generate(
+                    products.take(3).length,
+                    (index) => _productItem(products[index]),
+                  ),
+                ),
+                if (products.length > 3) ...[
+                  verticalHeight8,
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Clickable(
+                      onTap: () {},
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: myText("View All", color: Consts.primaryColor),
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -76,13 +110,21 @@ class _NavProductsPageState extends State<NavProductsPage> {
             Clickable(
               onTap: () {},
               // onTap: () => context.push(ProductDetailsPage(product: product)),
-              radius: 16,
+              radius: 12,
               child: Hero(
                 tag: product.readableId,
                 child: MyCard(
-                  child: Image.memory(
-                    base64Decode(product.base64Images.first),
-                    fit: BoxFit.contain,
+                  elevation: 6,
+                  shadowColor: Consts.primaryColor.withOpacity(0.5),
+                  padding: const EdgeInsets.all(8),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.memory(
+                      base64Decode(product.base64Images.first),
+                      fit: BoxFit.contain,
+                      width: itemWidth,
+                      height: itemWidth,
+                    ),
                   ),
                 ),
               ),

@@ -11,7 +11,11 @@ class _NavAccountPageState extends State<NavAccountPage> {
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
-      body: Center(child: myText("Account")),
+      body: Center(
+        child: myText(
+          CacheManager.currentCustomer?.name,
+        ),
+      ),
     );
   }
 }

@@ -8,7 +8,7 @@ class Clickable extends StatelessWidget {
   final Widget child;
   const Clickable({
     super.key,
-    this.radius = 4,
+    this.radius = 12,
     required this.onTap,
     required this.child,
   });

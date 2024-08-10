@@ -24,7 +24,7 @@ class MyScaffold extends StatelessWidget {
           appBar: appBar,
           backgroundColor: backgroundColor ?? Consts.scaffoldBackgroundColor,
           body: Padding(
-            padding: padding ?? const EdgeInsets.fromLTRB(24, 0, 24, 0),
+            padding: padding ?? const EdgeInsets.fromLTRB(16, 0, 16, 0),
             child: body,
           ),
           floatingActionButton: fab,

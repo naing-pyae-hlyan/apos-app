@@ -1,5 +1,8 @@
 flutter 3.22.0
 
+10/08/2024 (0.0.4)
+1. UPDATE: NavProductPage UI.
+
 09/08/2024 (0.0.3)
 1. NEW: Register is implemented.
 2. NEW: Login & Splash is implemented.
