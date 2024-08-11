@@ -24,13 +24,15 @@ class _NavHomePageState extends State<NavHomePage> {
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
-        Scaffold(
-          body: switch (_currentPage) {
-            NavHomeEnum.products => const NavProductsPage(),
-            NavHomeEnum.orders => const NavOrdersPage(),
-            NavHomeEnum.noti => const NavNotiPage(),
-            NavHomeEnum.account => const NavAccountPage(),
-          },
+        SafeArea(
+          child: Scaffold(
+            body: switch (_currentPage) {
+              NavHomeEnum.products => const NavProductsPage(),
+              NavHomeEnum.orders => const NavOrdersPage(),
+              NavHomeEnum.noti => const NavNotiPage(),
+              NavHomeEnum.account => const NavAccountPage(),
+            },
+          ),
         ),
         Card(
           shape: RoundedRectangleBorder(

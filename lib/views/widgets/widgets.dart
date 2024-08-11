@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:apos_app/lib_exp.dart';
 
 const emptyUI = SizedBox.shrink();
@@ -59,3 +61,33 @@ Widget circularCount(int count) {
     ),
   );
 }
+
+Widget leadingProductImage(String? image) {
+  if (image == null) return _defaultNoImage;
+  Uint8List? memory;
+  try {
+    memory = base64Decode(image);
+  } catch (_) {}
+
+  if (memory == null) return _defaultNoImage;
+
+  return ClipRRect(
+    borderRadius: BorderRadius.circular(8),
+    child: Image.memory(
+      memory,
+      width: 64,
+      height: 64,
+      fit: BoxFit.contain,
+      errorBuilder: (_, __, ___) => _defaultNoImage,
+    ),
+  );
+}
+
+Widget get _defaultNoImage => Container(
+      width: 64,
+      height: 64,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.grey[300],
+      ),
+    );

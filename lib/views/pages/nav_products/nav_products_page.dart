@@ -65,7 +65,6 @@ class _NavProductsPageState extends State<NavProductsPage> {
           ),
           verticalHeight8,
           MyCard(
-            cardColor: Consts.secondaryColor,
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
             child: Column(
               children: [

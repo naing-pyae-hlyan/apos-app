@@ -26,15 +26,16 @@ class OrderModel {
   });
 
   factory OrderModel.fromJson(Map<String, dynamic> json, String id) {
+    final Timestamp timestamp = json["order_date"];
     return OrderModel(
       id: id,
       readableId: json["id"],
-      customer: CustomerModel.fromJson(json["customer"], "TODO"),
-      items: List.from(json["items"].map((x) => ItemModel.fromJson(x, "TODO"))),
-      orderDate: DateTime.parse(json['order_date']),
+      customer: CustomerModel.fromJson(json["customer"], null),
+      items: List.from(json["items"].map((x) => ItemModel.fromJson(x))),
+      orderDate: timestamp.toDate(),
       totalAmount: json['total_amount'],
       statusId: json['status_id'],
-      status: parseToOrderStatus(json["status_id"]),
+      status: parseToOrderStatusForMobileUI(json["status_id"]),
       comment: json["comment"],
     );
   }

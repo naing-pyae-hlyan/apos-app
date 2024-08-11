@@ -50,7 +50,7 @@ Widget errorText<T>(T value) {
 
   return myText(
     error,
-    color: Consts.errorColor,
+    color: Consts.errorColor, maxLines: 20,
     // fontWeight: FontWeight.w800,
   );
 }

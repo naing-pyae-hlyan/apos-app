@@ -17,7 +17,7 @@ class CustomerModel {
     required this.address,
   });
 
-  factory CustomerModel.fromJson(Map<String, dynamic> json, String id) {
+  factory CustomerModel.fromJson(Map<String, dynamic> json, String? id) {
     return CustomerModel(
       id: id,
       readableId: json['id'],

@@ -76,3 +76,18 @@ String idsGenerator(String prefix, int length) {
 
   return slugify("$prefix $id");
 }
+
+String? getFirstProductImageById(String? id) {
+  if (id == null) return null;
+  String? image;
+
+  for (ProductModel product in CacheManager.products) {
+    if (product.id == id) {
+      if (product.base64Images.isNotEmpty) {
+        image = product.base64Images.first;
+      }
+      break;
+    }
+  }
+  return image;
+}

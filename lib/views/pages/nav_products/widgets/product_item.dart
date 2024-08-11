@@ -27,7 +27,6 @@ class ProductItem extends StatelessWidget {
               tag: product.readableId,
               child: MyCard(
                 elevation: 6,
-                shadowColor: Consts.primaryColor.withOpacity(0.5),
                 padding: const EdgeInsets.all(8),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),

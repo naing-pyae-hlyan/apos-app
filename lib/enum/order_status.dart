@@ -19,7 +19,7 @@ enum OrderStatus {
     code: 2,
     name: "Processing",
     value: "Process",
-    color: Colors.amber,
+    color: Colors.orange,
     icon: Icons.rocket_launch_rounded,
   ),
   delivered(
@@ -46,6 +46,14 @@ enum OrderStatus {
 
 OrderStatus parseToOrderStatus(int code) => code == 0
     ? OrderStatus.newOrder
+    : code == 1
+        ? OrderStatus.cancelled
+        : code == 2
+            ? OrderStatus.processing
+            : OrderStatus.delivered;
+
+OrderStatus parseToOrderStatusForMobileUI(int code) => code == 0
+    ? OrderStatus.processing
     : code == 1
         ? OrderStatus.cancelled
         : code == 2

@@ -38,12 +38,13 @@ AppBar myAppBar({
   required Widget title,
   bool centerTitle = true,
   final List<Widget>? actions,
+  double elevation = 16,
 }) =>
     AppBar(
       automaticallyImplyLeading: true,
       title: title,
       centerTitle: centerTitle,
-      elevation: 16,
+      elevation: elevation,
       backgroundColor: Colors.white,
       surfaceTintColor: Colors.white,
       shadowColor: Consts.secondaryColor,

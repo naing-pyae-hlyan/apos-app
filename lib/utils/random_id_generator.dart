@@ -19,7 +19,7 @@ class RandomIdGenerator {
   static String generateUniqueId() {
     String randomLetters = generateRandomString(3); // 3 random letters
     String randomDigits = generateRandomDigits(4); // 4 random digits
-    return ("$randomLetters  $randomDigits").slugify; // ABC-1234
+    return ("$randomLetters $randomDigits").slugify; // ABC-1234
   }
 
   static String getnerateCategoryUniqueId() {

@@ -77,7 +77,7 @@ class _SubmitOrderPageState extends State<SubmitOrderPage> {
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
-      appBar: myAppBar(title: myTitle("Submit Orders")),
+      appBar: myAppBar(title: myTitle("Submit Orders"), elevation: 0),
       padding: EdgeInsets.zero,
       body: Column(
         children: [
@@ -86,8 +86,7 @@ class _SubmitOrderPageState extends State<SubmitOrderPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  verticalHeight8,
-                  const Divider(color: Consts.primaryColor),
+                  Divider(color: Colors.grey[300], thickness: 12),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: _itemRow(
@@ -96,7 +95,7 @@ class _SubmitOrderPageState extends State<SubmitOrderPage> {
                       amount: myTitle("Amount", textAlign: TextAlign.end),
                     ),
                   ),
-                  const Divider(color: Consts.primaryColor),
+                  Divider(color: Colors.grey[300], thickness: 12),
                   ListView.separated(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -106,7 +105,7 @@ class _SubmitOrderPageState extends State<SubmitOrderPage> {
                   ),
                   verticalHeight24,
                   Container(
-                    color: Consts.secondaryColor,
+                    color: Colors.grey[300],
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
                     child: Row(

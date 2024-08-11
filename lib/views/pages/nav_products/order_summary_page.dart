@@ -124,14 +124,15 @@ class _OrderSummaryPageState extends State<OrderSummaryPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(16),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      _itemListLeadingImage(
-                          (item.product?.base64Images ?? []).first),
+                      leadingProductImage(
+                        (item.product?.base64Images ?? []).first,
+                      ),
                       horizontalWidth16,
                       Expanded(
                         child: Column(
@@ -163,10 +164,10 @@ class _OrderSummaryPageState extends State<OrderSummaryPage> {
                       bottomLeft: Radius.circular(12),
                       bottomRight: Radius.circular(12),
                     ),
-                    color: Consts.secondaryColor,
+                    color: Consts.scaffoldBackgroundColor,
                   ),
                   width: double.infinity,
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -234,34 +235,4 @@ class _OrderSummaryPageState extends State<OrderSummaryPage> {
       ],
     );
   }
-
-  Widget _itemListLeadingImage(String? image) {
-    if (image == null) return _defaultNoImage;
-    Uint8List? memory;
-    try {
-      memory = base64Decode(image);
-    } catch (_) {}
-
-    if (memory == null) return _defaultNoImage;
-
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(8),
-      child: Image.memory(
-        memory,
-        width: 64,
-        height: 64,
-        fit: BoxFit.contain,
-        errorBuilder: (_, __, ___) => _defaultNoImage,
-      ),
-    );
-  }
-
-  Widget get _defaultNoImage => Container(
-        width: 64,
-        height: 64,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Colors.grey[300],
-        ),
-      );
 }

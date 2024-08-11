@@ -60,6 +60,7 @@ class ProductModel {
     };
   }
 
+
   @override
   bool operator ==(Object other) {
     return other is ProductModel && id == other.id;
