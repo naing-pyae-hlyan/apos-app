@@ -35,7 +35,7 @@ class CustomerModel {
       'name': name,
       'email': email,
       'phone': phone,
-      // 'password': password,
+      'password': password,
       'address': address,
     };
   }

@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:apos_app/lib_exp.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthStateInitial()) {
     on<AuthEventLogin>(_onLogin);
     on<AuthEventRegister>(_onRegister);
+    on<AuthEventUpdateCustomer>(_onUpdateCustomer);
   }
 
   Future<void> _onLogin(
@@ -20,14 +23,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       return;
     }
 
-    final hashPassword = HashUtils.hashPassword(event.password);
-
     await FFirestoreUtils.customerCollection.get().then(
       (QuerySnapshot<CustomerModel> snapshot) async {
         bool authorize = false;
         for (var doc in snapshot.docs) {
           if (event.email == doc.data().email &&
-              hashPassword == doc.data().password) {
+              event.password == doc.data().password) {
             authorize = true;
             CacheManager.currentCustomer = doc.data();
             break;
@@ -109,6 +110,51 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     ).catchError((error) {
       emit(_authStateFail(message: error.toString(), code: 5));
     });
+  }
+
+  Future<void> _onUpdateCustomer(
+    AuthEventUpdateCustomer event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthStateLoading());
+
+    if (event.customer.name.isEmpty) {
+      emit(_authStateFail(message: "Enter Name", code: 1));
+      return;
+    }
+
+    if (event.customer.email.isEmpty) {
+      emit(_authStateFail(message: "Enter Email", code: 2));
+      return;
+    }
+
+    if (event.customer.phone.isEmpty) {
+      emit(_authStateFail(message: "Enter Phone", code: 3));
+      return;
+    }
+
+    if (event.customer.address.isEmpty) {
+      emit(_authStateFail(message: "Enter Address", code: 4));
+      return;
+    }
+    if (event.customer.password?.isEmpty == true) {
+      emit(_authStateFail(message: "Enter Password", code: 5));
+      return;
+    }
+
+    final storedPassword = await SpHelper.password;
+    if (event.customer.password != storedPassword) {
+      emit(_authStateFail(message: "Password does not match", code: 5));
+      return;
+    }
+
+    await FFirestoreUtils.customerCollection
+        .doc(event.customer.id)
+        .update(event.customer.toJson())
+        .then((_) => emit(AuthStateUpdateCustomerSuccess(event.customer)))
+        .catchError(
+          (error) => emit(_authStateFail(message: error.toString(), code: 5)),
+        );
   }
 
   AuthStateFail _authStateFail({

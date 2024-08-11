@@ -4,6 +4,7 @@ flutter 3.22.0
 1. NEW: Submit Order is implemented.
 2. NEW: ViewMore Products and Searchable.
 3. NEW: OrderDetailsPage is added.
+4. NEW: Account Edit is added.
 
 10/08/2024 (0.0.4)
 1. UPDATE: NavProductPage UI.

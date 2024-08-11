@@ -21,9 +21,11 @@ class _LoginPageState extends State<LoginPage> {
   final passwordFn = FocusNode();
 
   void _login() {
+    final password = passwordTxtCtrl.text;
+    final hashPassword = HashUtils.hashPassword(password);
     authBloc.add(AuthEventLogin(
       email: emailTxtCtrl.text,
-      password: passwordTxtCtrl.text,
+      password: hashPassword,
       rememberMe: true,
     ));
   }

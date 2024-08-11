@@ -4,6 +4,7 @@ void showConfirmDialog(
   BuildContext context, {
   required String title,
   String? description,
+  String? okLabel,
   Function()? onTapCancel,
   required Function() onTapOk,
 }) =>
@@ -13,6 +14,7 @@ void showConfirmDialog(
       builder: (_) => _ConfirmDialog(
         title: title,
         description: description,
+        okLebel: okLabel ?? "OK",
         onTapCancel: onTapCancel,
         onTapOk: onTapOk,
       ),
@@ -21,11 +23,13 @@ void showConfirmDialog(
 class _ConfirmDialog extends StatelessWidget {
   final String title;
   final String? description;
+  final String okLebel;
   final Function()? onTapCancel;
   final Function() onTapOk;
   const _ConfirmDialog({
     required this.title,
     this.description,
+    required this.okLebel,
     this.onTapCancel,
     required this.onTapOk,
   });
@@ -37,7 +41,7 @@ class _ConfirmDialog extends StatelessWidget {
       shadowColor: Consts.secondaryColor,
       icon: const Icon(
         Icons.info,
-        color: Consts.primaryColor,
+        color: Consts.warningColor,
         size: 96,
       ),
       title: myTitle(title, textAlign: TextAlign.center),
@@ -52,16 +56,18 @@ class _ConfirmDialog extends StatelessWidget {
           },
           child: myText('Cancel'),
         ),
-        MyButton(
-          label: "Delete",
-          labelColor: Colors.white,
-          borderColor: Colors.red,
-          backgroundColor: Colors.red,
-          icon: Icons.delete,
+        TextButton(
           onPressed: () {
+            context.pop(result: true);
             onTapOk();
-            Navigator.of(context).pop();
           },
+          style: TextButton.styleFrom(
+            backgroundColor: Colors.red,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: myText(okLebel, color: Colors.white),
+          ),
         ),
       ],
     );

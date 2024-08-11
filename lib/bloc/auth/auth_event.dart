@@ -17,3 +17,8 @@ class AuthEventRegister extends AuthEvent {
   CustomerModel customer;
   AuthEventRegister({required this.customer});
 }
+
+class AuthEventUpdateCustomer extends AuthEvent {
+  CustomerModel customer;
+  AuthEventUpdateCustomer({required this.customer});
+}
