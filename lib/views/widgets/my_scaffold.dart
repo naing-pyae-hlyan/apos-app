@@ -37,6 +37,7 @@ class MyScaffold extends StatelessWidget {
 AppBar myAppBar({
   required Widget title,
   bool centerTitle = true,
+  final List<Widget>? actions,
 }) =>
     AppBar(
       automaticallyImplyLeading: true,
@@ -46,6 +47,10 @@ AppBar myAppBar({
       backgroundColor: Colors.white,
       surfaceTintColor: Colors.white,
       shadowColor: Consts.secondaryColor,
+      actions: [
+        if (actions != null) ...actions,
+        horizontalWidth16,
+      ],
     );
 
 class MyScaffoldDataGridView<M> extends StatelessWidget {

@@ -92,7 +92,7 @@ class _OrderSummaryPageState extends State<OrderSummaryPage> {
           if (mounted && result == true) {
             // close order_summary_page
             // ignore: use_build_context_synchronously
-            context.pop();
+            context.pop(result: true);
           }
         },
         iconData: Icons.shopping_cart_checkout,

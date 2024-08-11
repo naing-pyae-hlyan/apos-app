@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:apos_app/lib_exp.dart';
 
 class NavProductsPage extends StatefulWidget {
@@ -77,7 +75,15 @@ class _NavProductsPageState extends State<NavProductsPage> {
                   mainAxisSize: MainAxisSize.max,
                   children: List.generate(
                     products.take(3).length,
-                    (index) => _productItem(products[index]),
+                    (index) => ProductItem(
+                      itemWidth: itemWidth,
+                      product: products[index],
+                      onPressed: () {
+                        context.push(
+                          ProductDetailsPage(product: products[index]),
+                        );
+                      },
+                    ),
                   ),
                 ),
                 if (products.length > 3) ...[
@@ -85,7 +91,12 @@ class _NavProductsPageState extends State<NavProductsPage> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: Clickable(
-                      onTap: () {},
+                      onTap: () {
+                        context.push(MoreProductsPage(
+                          category: category,
+                          products: products,
+                        ));
+                      },
                       child: Padding(
                         padding: const EdgeInsets.all(8),
                         child: myText("View All", color: Consts.primaryColor),
@@ -100,46 +111,4 @@ class _NavProductsPageState extends State<NavProductsPage> {
       ),
     );
   }
-
-  Widget _productItem(ProductModel product) => SizedBox(
-        width: itemWidth,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Clickable(
-              onTap: () => context.push(ProductDetailsPage(product: product)),
-              radius: 12,
-              child: Hero(
-                tag: product.readableId,
-                child: MyCard(
-                  elevation: 6,
-                  shadowColor: Consts.primaryColor.withOpacity(0.5),
-                  padding: const EdgeInsets.all(8),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.memory(
-                      base64Decode(product.base64Images.first),
-                      fit: BoxFit.contain,
-                      width: itemWidth,
-                      height: itemWidth,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            verticalHeight8,
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: myText(product.name),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: myText(
-                product.price.toCurrencyFormat(countryIso: "MMK"),
-                color: Consts.descriptionColor,
-              ),
-            ),
-          ],
-        ),
-      );
 }

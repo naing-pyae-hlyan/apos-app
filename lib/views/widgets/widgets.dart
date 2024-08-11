@@ -40,3 +40,22 @@ Widget circularColor(int color) => SizedBox(
         backgroundColor: Color(color),
       ),
     );
+
+Widget circularCount(int count) {
+  String number = count > 99 ? "99+" : "$count";
+  return Container(
+    width: 24,
+    height: 24,
+    padding: const EdgeInsets.all(2),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(32),
+      color: Consts.currencyRed,
+    ),
+    child: myText(
+      number,
+      color: Colors.white,
+      textAlign: TextAlign.center,
+      fontWeight: FontWeight.w800,
+    ),
+  );
+}

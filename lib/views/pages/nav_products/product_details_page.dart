@@ -41,7 +41,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     }
 
     // Close the ProductDetailsPage
-    context.pop();
+    context.pop(result: true);
   }
 
   @override
