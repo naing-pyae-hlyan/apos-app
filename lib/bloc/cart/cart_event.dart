@@ -7,6 +7,11 @@ class CartEventAddItem extends CartEvent {
   CartEventAddItem({required this.item});
 }
 
+class CartEventUpdateItem extends CartEvent {
+  final ItemModel item;
+  CartEventUpdateItem({required this.item});
+}
+
 class CartEventRemoveItem extends CartEvent {
   final String itemId;
   CartEventRemoveItem({required this.itemId});
@@ -17,3 +22,6 @@ class CartEventChangeItemQty extends CartEvent {
   final int newQty;
   CartEventChangeItemQty({required this.itemId, required this.newQty});
 }
+
+
+class CartEventResetItems extends CartEvent{}

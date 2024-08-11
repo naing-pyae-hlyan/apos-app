@@ -110,7 +110,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
-      appBar: myAppBar(title: "Back To Login"),
+      appBar: myAppBar(title: myTitle("Back To Login"), centerTitle: false),
       body: Center(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),

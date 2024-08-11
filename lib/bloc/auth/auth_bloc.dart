@@ -75,7 +75,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       return;
     }
 
-    if (event.customer.password.isEmpty) {
+    if (event.customer.password?.isEmpty == true) {
       emit(_authStateFail(message: "Enter Password", code: 5));
       return;
     }

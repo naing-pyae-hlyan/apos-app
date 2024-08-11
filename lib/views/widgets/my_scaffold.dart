@@ -35,15 +35,17 @@ class MyScaffold extends StatelessWidget {
 }
 
 AppBar myAppBar({
-  String title = "Back",
+  required Widget title,
+  bool centerTitle = true,
 }) =>
     AppBar(
-      backgroundColor: Consts.scaffoldBackgroundColor,
-      surfaceTintColor: Consts.scaffoldBackgroundColor,
       automaticallyImplyLeading: true,
-      title: myTitle(title, fontWeight: FontWeight.w600),
-      centerTitle: false,
+      title: title,
+      centerTitle: centerTitle,
       elevation: 16,
+      backgroundColor: Colors.white,
+      surfaceTintColor: Colors.white,
+      shadowColor: Consts.secondaryColor,
     );
 
 class MyScaffoldDataGridView<M> extends StatelessWidget {

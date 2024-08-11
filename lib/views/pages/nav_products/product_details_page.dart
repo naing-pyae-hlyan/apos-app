@@ -2,9 +2,11 @@ import 'package:apos_app/lib_exp.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   final ProductModel product;
+  final ItemModel? item;
   const ProductDetailsPage({
     super.key,
     required this.product,
+    this.item,
   });
 
   @override
@@ -20,7 +22,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
   void addToCart() {
     final item = ItemModel(
-      id: widget.product.id,
+      id: widget.product.id!,
       name: widget.product.name,
       price: widget.product.price,
       types: _selectedType == null ? [] : [_selectedType!],
@@ -30,7 +32,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       product: widget.product,
     );
 
-    cartBloc.add(CartEventAddItem(item: item));
+    if (widget.item == null) {
+      // add to cart
+      cartBloc.add(CartEventAddItem(item: item));
+    } else {
+      // update to cart
+      cartBloc.add(CartEventUpdateItem(item: item));
+    }
+
     // Close the ProductDetailsPage
     context.pop();
   }
@@ -39,26 +48,28 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   void initState() {
     cartBloc = context.read<CartBloc>();
     super.initState();
+    if (widget.item != null) {
+      _itemQty = widget.item?.qty ?? 1;
+      if (widget.item?.types.isNotEmpty == true) {
+        _selectedType = widget.item?.types.first;
+      }
+      if (widget.item?.colors.isNotEmpty == true) {
+        _selectedColor = widget.item?.colors.first;
+      }
+    }
     doAfterBuild(callback: () {
-      _itemPricingListener.value = widget.product.price;
+      _itemPricingListener.value = widget.product.price * _itemQty;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        title: myTitle(widget.product.name),
-        elevation: 16,
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
-        shadowColor: Consts.secondaryColor,
-      ),
+      appBar: myAppBar(title: myTitle(widget.product.name)),
       padding: EdgeInsets.zero,
       fab: floatingActionButton(
         onPressed: addToCart,
-        iconData: Icons.add_shopping_cart,
+        iconData: widget.item == null ? Icons.add_shopping_cart : Icons.save,
         heroTag: heroTagCart,
       ),
       body: SingleChildScrollView(
@@ -122,7 +133,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: MultiSelectProductSizes(
                   sizes: widget.product.sizes,
-                  oldSizes: const [],
+                  oldSizes: widget.item?.types ?? [],
                   onSelectedSize: (String? selectedSize) {
                     _selectedType = selectedSize;
                   },
@@ -135,7 +146,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: MultiSelectProductColors(
                   hexColors: widget.product.hexColors,
-                  oldHexColors: const [],
+                  oldHexColors: widget.item?.colors ?? [],
                   onSelectedColors: (int? selectedColor) {
                     _selectedColor = selectedColor;
                   },
@@ -146,6 +157,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: QtyButton(
+                qty: widget.item?.qty,
                 onQtyChanged: (int qty) {
                   _itemQty = qty;
                   _itemPricingListener.value = widget.product.price * qty;

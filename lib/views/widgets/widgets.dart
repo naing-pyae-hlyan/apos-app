@@ -32,3 +32,11 @@ Widget networkImage(String? url) => Image.network(
         fit: BoxFit.contain,
       ),
     );
+
+Widget circularColor(int color) => SizedBox(
+      width: 12,
+      height: 12,
+      child: CircleAvatar(
+        backgroundColor: Color(color),
+      ),
+    );

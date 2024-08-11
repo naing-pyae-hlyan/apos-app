@@ -4,7 +4,7 @@ class CustomerModel {
   final String name;
   final String email;
   final String phone;
-  final String password;
+  final String? password;
   final String address;
 
   CustomerModel({
@@ -35,7 +35,7 @@ class CustomerModel {
       'name': name,
       'email': email,
       'phone': phone,
-      'password': password,
+      // 'password': password,
       'address': address,
     };
   }

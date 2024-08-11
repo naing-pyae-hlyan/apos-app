@@ -24,13 +24,7 @@ class _MultiSelectProductColorsState extends State<MultiSelectProductColors> {
     for (final int productColor in widget.hexColors) {
       choices.add(
         ChoiceChip(
-          label: SizedBox(
-            width: 12,
-            height: 12,
-            child: CircleAvatar(
-              backgroundColor: Color(productColor),
-            ),
-          ),
+          label: circularColor(productColor),
           checkmarkColor: Consts.primaryColor,
           selected: selectedColors.contains(productColor),
           onSelected: (bool selected) {

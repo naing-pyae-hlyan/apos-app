@@ -1,7 +1,7 @@
 import 'package:apos_app/lib_exp.dart';
 
 class ItemModel {
-  String? id; // product_id
+  final String id; // product_id
   final String name;
   final num price;
   List<String> types;
@@ -11,7 +11,7 @@ class ItemModel {
   ProductModel? product;
 
   ItemModel({
-    this.id,
+    required this.id,
     required this.name,
     required this.price,
     required this.types,
@@ -22,7 +22,7 @@ class ItemModel {
   });
 
   factory ItemModel.fromJson(Map<String, dynamic> json, String id) => ItemModel(
-        id: id,
+        id: json["id"],
         name: json["name"],
         price: json["price"],
         types:

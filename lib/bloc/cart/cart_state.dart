@@ -13,6 +13,10 @@ class CartStateFail extends CartState {
 
 class CartStateAddItemSuccess extends CartState {}
 
+class CartStateUpdateItemSuccess extends CartState {}
+
 class CartStateRemoveItemSuccess extends CartState {}
 
 class CartStateEditChangeItemQtySuccess extends CartState {}
+
+class CartStateItemsClearSuccess extends CartState {}

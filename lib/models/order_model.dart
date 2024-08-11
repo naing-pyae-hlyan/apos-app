@@ -6,7 +6,7 @@ class OrderModel {
   final CustomerModel customer;
   final List<ItemModel> items;
 
-  final double totalAmount;
+  final num totalAmount;
   final int statusId;
   final DateTime orderDate;
   final String comment;
@@ -43,8 +43,8 @@ class OrderModel {
     return {
       'id': readableId,
       'customer': customer.toJson(),
-      'items': List.from(items.map((x) => x)),
-      'order_date': orderDate.toIso8601String(),
+      'items': List.from(items.map((x) => x.toJson())),
+      'order_date': orderDate,
       'total_amount': totalAmount,
       'status_id': statusId,
       'comment': comment,

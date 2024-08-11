@@ -35,8 +35,8 @@ class _SuccessDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () {
+            context.pop(result: true);
             onTapOk();
-            Navigator.of(context).pop();
           },
           style: TextButton.styleFrom(
             backgroundColor: Colors.green[50],

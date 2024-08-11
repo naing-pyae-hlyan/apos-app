@@ -16,7 +16,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => AuthBloc()),
         BlocProvider(create: (_) => ErrorBloc()),
         BlocProvider(create: (_) => DbBloc()),
-        BlocProvider(create: (_) => OrdersBloc()),
+        BlocProvider(create: (_) => OrderBloc()),
         BlocProvider(create: (_) => CartBloc()),
       ],
       child: const MainApp(),

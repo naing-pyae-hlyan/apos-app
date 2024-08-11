@@ -1,8 +1,11 @@
 flutter 3.22.0
 
+11/08/2024 (0.0.5)
+1. NEW: Submit Order is implemented.
+
 10/08/2024 (0.0.4)
 1. UPDATE: NavProductPage UI.
-2. NEW: AddToCard, OrderSummaryPage is implemented.
+2. NEW: AddToCart, OrderSummaryPage is implemented.
 
 09/08/2024 (0.0.3)
 1. NEW: Register is implemented.
