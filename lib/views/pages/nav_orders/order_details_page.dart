@@ -21,7 +21,16 @@ class OrderDetailsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Divider(color: Colors.grey[300], thickness: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                myText("Order Date: "),
+                myText(order.orderDate.toDDmmYYYYHHmm()),
+                horizontalWidth16,
+              ],
+            ),
+            verticalHeight8,
+            Divider(color: Colors.grey[300], thickness: 8),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: _itemRow(
@@ -30,7 +39,8 @@ class OrderDetailsPage extends StatelessWidget {
                 amount: myTitle("Amount", textAlign: TextAlign.end),
               ),
             ),
-            Divider(color: Colors.grey[300], thickness: 12),
+            Divider(color: Colors.grey[300], thickness: 8),
+            verticalHeight8,
             ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -45,8 +55,8 @@ class OrderDetailsPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  myTitle("Status: ", fontWeight: FontWeight.normal),
-                  myTitle(
+                  myText("Status: ", fontWeight: FontWeight.normal),
+                  myText(
                     order.status.name,
                     color: order.status.color,
                     fontWeight: FontWeight.normal,

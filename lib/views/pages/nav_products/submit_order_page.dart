@@ -86,7 +86,7 @@ class _SubmitOrderPageState extends State<SubmitOrderPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Divider(color: Colors.grey[300], thickness: 12),
+                  Divider(color: Colors.grey[300], thickness: 8),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: _itemRow(
@@ -95,7 +95,8 @@ class _SubmitOrderPageState extends State<SubmitOrderPage> {
                       amount: myTitle("Amount", textAlign: TextAlign.end),
                     ),
                   ),
-                  Divider(color: Colors.grey[300], thickness: 12),
+                  Divider(color: Colors.grey[300], thickness: 8),
+                  verticalHeight8,
                   ListView.separated(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),

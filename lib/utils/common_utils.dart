@@ -8,12 +8,12 @@ class CommonUtils {
       FutureBuilder(
         future: appVersion(prefix: prefix),
         builder: (_, snapshot) => SafeArea(
-          child: myTitle(
+          child: myText(
             (snapshot.hasData && snapshot.data != null)
                 ? snapshot.data as String
                 : '',
             fontSize: 13,
-            color: Consts.secondaryColor,
+            color: color ?? Consts.secondaryColor,
           ),
         ),
       );

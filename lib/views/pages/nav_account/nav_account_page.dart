@@ -70,19 +70,25 @@ class _NavAccountPageState extends State<NavAccountPage> {
                 ),
                 TextButton.icon(
                   onPressed: () => context.push(const AccountEditPage()),
-                  label: myText("Edit", color: Colors.indigo),
-                  icon: const Icon(Icons.edit_square, color: Colors.indigo),
+                  label: myText("Edit", color: Colors.black),
+                  icon: const Icon(Icons.edit_square, color: Colors.black),
                 ),
               ],
             ),
             verticalHeight32,
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton.icon(
-                onPressed: _logout,
-                label: myText("Logout", color: Colors.red),
-                icon: const Icon(Icons.logout, color: Colors.red),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton.icon(
+                  onPressed: _logout,
+                  label: myText("Logout", color: Colors.red),
+                  icon: const Icon(Icons.logout, color: Colors.red),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: CommonUtils.versionLabel(color: Colors.black),
+                ),
+              ],
             ),
           ],
         ),

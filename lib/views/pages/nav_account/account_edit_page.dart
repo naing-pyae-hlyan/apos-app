@@ -33,9 +33,14 @@ class _AccountEditPageState extends State<AccountEditPage> {
     errorBloc.add(ErrorEventResert());
     final password = passwordTxtCtrl.text;
     final hashPassword = HashUtils.hashPassword(password);
+    if (CacheManager.currentCustomer?.id == null ||
+        CacheManager.currentCustomer?.readableId == null) {
+      return;
+    }
+
     final customer = CustomerModel(
       id: CacheManager.currentCustomer?.id,
-      readableId: RandomIdGenerator.getnerateProductUniqueId(),
+      readableId: CacheManager.currentCustomer!.readableId,
       name: nameTxtCtrl.text,
       email: emailTxtCtrl.text,
       phone: phoneTxtCtrl.text,

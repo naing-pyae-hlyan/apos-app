@@ -27,7 +27,7 @@ Text myText(
 Text myTitle(
   String? text, {
   int maxLines = 2,
-  double fontSize = 16.0,
+  double fontSize = 14.0,
   Color color = Consts.primaryFontColor,
   FontWeight? fontWeight,
   TextAlign textAlign = TextAlign.start,
