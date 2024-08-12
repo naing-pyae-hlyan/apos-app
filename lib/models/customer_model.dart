@@ -6,6 +6,7 @@ class CustomerModel {
   final String phone;
   final String? password;
   final String address;
+  final int status;
 
   CustomerModel({
     this.id,
@@ -15,6 +16,7 @@ class CustomerModel {
     required this.phone,
     required this.password,
     required this.address,
+    required this.status,
   });
 
   factory CustomerModel.fromJson(Map<String, dynamic> json, String? id) {
@@ -26,6 +28,7 @@ class CustomerModel {
       phone: json['phone'],
       password: json['password'],
       address: json['address'],
+      status: json['status'],
     );
   }
 
@@ -37,6 +40,7 @@ class CustomerModel {
       'phone': phone,
       'password': password,
       'address': address,
+      'status': status,
     };
   }
 }

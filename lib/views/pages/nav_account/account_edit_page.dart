@@ -41,6 +41,7 @@ class _AccountEditPageState extends State<AccountEditPage> {
     final customer = CustomerModel(
       id: CacheManager.currentCustomer?.id,
       readableId: CacheManager.currentCustomer!.readableId,
+      status: CacheManager.currentCustomer!.status,
       name: nameTxtCtrl.text,
       email: emailTxtCtrl.text,
       phone: phoneTxtCtrl.text,

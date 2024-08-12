@@ -40,6 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
       phone: phoneTxtCtrl.text,
       password: hashPassword,
       address: addressTxtCtrl.text,
+      status: 1,
     );
     authBloc.add(AuthEventRegister(customer: customer));
   }

@@ -26,21 +26,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     await FFirestoreUtils.customerCollection.get().then(
       (QuerySnapshot<CustomerModel> snapshot) async {
         bool authorize = false;
+        bool accountIsActive = true;
         for (var doc in snapshot.docs) {
           if (event.email == doc.data().email &&
               event.password == doc.data().password) {
             authorize = true;
+            accountIsActive = doc.data().status == 1;
             CacheManager.currentCustomer = doc.data();
             break;
           }
         }
 
-        if (authorize) {
+        if (authorize && accountIsActive) {
           await SpHelper.rememberMe(
             email: event.email,
             password: event.password,
           );
           emit(AuthStateLoginSuccess());
+        } else if (!accountIsActive) {
+          emit(_authStateFail(message: "Your account is disabled.", code: 2));
         } else {
           emit(_authStateFail(message: "Invalid Email or Password", code: 2));
         }

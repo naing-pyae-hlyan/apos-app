@@ -1,5 +1,8 @@
 flutter 3.22.0
 
+12/08/2024 (0.0.6)
+1. NEW: Account status is updated.
+
 11/08/2024 (0.0.5)
 1. NEW: Submit Order is implemented.
 2. NEW: ViewMore Products and Searchable.
