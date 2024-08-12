@@ -2,6 +2,7 @@ flutter 3.22.0
 
 12/08/2024 (0.0.6)
 1. NEW: Account status is updated.
+2. UPDATE: Register add created date.
 
 11/08/2024 (0.0.5)
 1. NEW: Submit Order is implemented.

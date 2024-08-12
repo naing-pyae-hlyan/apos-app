@@ -41,6 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
       password: hashPassword,
       address: addressTxtCtrl.text,
       status: 1,
+      createdDate: DateTime.now(),
     );
     authBloc.add(AuthEventRegister(customer: customer));
   }
