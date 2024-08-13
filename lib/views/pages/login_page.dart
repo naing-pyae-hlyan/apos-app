@@ -32,16 +32,18 @@ class _LoginPageState extends State<LoginPage> {
 
   void _loginStateListener(BuildContext context, AuthState state) async {
     if (state is AuthStateLoginSuccess) {
-      final fcmToken = await SpHelper.fcmToken;
-      final customerId = CacheManager.currentCustomer?.id;
-      
-      authBloc.add(
-        AuthEventUpdateFcm(customerId: customerId, fcmToken: fcmToken),
-      );
-    }
-    if (state is AuthStateUpdateFcmSuccess) {
+      LoadingDialog.show();
       dbBloc.add(DbEventGetProductsWithCategoryFromServer());
+      // final fcmToken = await SpHelper.fcmToken;
+      // final customerId = CacheManager.currentCustomer?.id;
+
+      // authBloc.add(
+      //   AuthEventUpdateFcm(customerId: customerId, fcmToken: fcmToken),
+      // );
     }
+    // if (state is AuthStateUpdateFcmSuccess) {
+    //   dbBloc.add(DbEventGetProductsWithCategoryFromServer());
+    // }
 
     if (state is AuthStateFail) {
       String? errorKey;
@@ -59,11 +61,13 @@ class _LoginPageState extends State<LoginPage> {
 
   void _dbStateListener(BuildContext context, DbState state) {
     if (state is DbStateGetProductsWithCategoryFromServerSuccess) {
+      LoadingDialog.hide();
       context.pushAndRemoveUntil(const NavHomePage());
       return;
     }
 
     if (state is DbStateFail) {
+      LoadingDialog.hide();
       showErrorDialog(
         context,
         title: "Server Error",

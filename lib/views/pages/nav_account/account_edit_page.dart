@@ -196,7 +196,7 @@ class _AccountEditPageState extends State<AccountEditPage> {
                 errorKey: _userPasswordErrorKey,
                 onSubmitted: (String str) {},
               ),
-              verticalHeight24,
+              verticalHeight32,
               BlocConsumer<AuthBloc, AuthState>(
                 listener: _updateCustomerStateListener,
                 builder: (_, AuthState state) {
@@ -207,7 +207,7 @@ class _AccountEditPageState extends State<AccountEditPage> {
                   return TextButton(
                     onPressed: _onUpdate,
                     style: TextButton.styleFrom(
-                      backgroundColor: Colors.indigo,
+                      backgroundColor: Consts.primaryColor,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),

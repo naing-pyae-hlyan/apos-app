@@ -21,6 +21,7 @@ class OrderDetailsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+            verticalHeight8,
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

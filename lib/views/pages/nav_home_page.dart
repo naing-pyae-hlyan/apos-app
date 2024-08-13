@@ -59,12 +59,12 @@ class _NavHomePageState extends State<NavHomePage> {
                 isActive: _currentPage == NavHomeEnum.orders,
                 onTap: () => _onDidChangedNavBar(NavHomeEnum.orders),
               ),
-              _navIconButton(
-                icon: Icons.notifications,
-                label: 'Noti',
-                isActive: _currentPage == NavHomeEnum.noti,
-                onTap: () => _onDidChangedNavBar(NavHomeEnum.noti),
-              ),
+              // _navIconButton(
+              //   icon: Icons.notifications,
+              //   label: 'Noti',
+              //   isActive: _currentPage == NavHomeEnum.noti,
+              //   onTap: () => _onDidChangedNavBar(NavHomeEnum.noti),
+              // ),
               _navIconButton(
                 icon: Icons.person,
                 label: 'Account',
