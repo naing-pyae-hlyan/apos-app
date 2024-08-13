@@ -1,5 +1,4 @@
 import 'package:apos_app/lib_exp.dart';
-import 'package:flutter/material.dart';
 
 class MyButton extends StatelessWidget {
   final String label;

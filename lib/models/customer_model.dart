@@ -9,6 +9,7 @@ class CustomerModel {
   final String? password;
   final String address;
   final int status;
+  final String? fcmToken;
   final DateTime createdDate;
 
   CustomerModel({
@@ -20,6 +21,7 @@ class CustomerModel {
     required this.password,
     required this.address,
     required this.status,
+    required this.fcmToken,
     required this.createdDate,
   });
 
@@ -34,6 +36,7 @@ class CustomerModel {
       password: json['password'],
       address: json['address'],
       status: json['status'] ?? 1,
+      fcmToken: json['fcm_token'],
       createdDate: timestamp.toDate(),
     );
   }
@@ -47,6 +50,7 @@ class CustomerModel {
       'password': password,
       'address': address,
       'status': status,
+      'fcm_token': fcmToken,
       'created_date': createdDate,
     };
   }

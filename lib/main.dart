@@ -1,4 +1,5 @@
 import 'package:apos_app/lib_exp.dart';
+import 'package:flutter/foundation.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -10,6 +11,14 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  final fcmToken = await FMUtils.token;
+  await SpHelper.setFcmToken(fcmToken);
+
+  if (kDebugMode) {
+    print(("FCM Token = $fcmToken"));
+  }
+
   runApp(
     MultiBlocProvider(
       providers: [

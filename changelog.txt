@@ -1,5 +1,8 @@
 flutter 3.22.0
 
+13/08/2024 (0.0.7)
+1. NEW: FCM token is updated to each customer.
+
 12/08/2024 (0.0.6)
 1. NEW: Account status is updated.
 2. UPDATE: Register add created date.

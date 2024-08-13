@@ -30,10 +30,19 @@ class _LoginPageState extends State<LoginPage> {
     ));
   }
 
-  void _loginStateListener(BuildContext context, AuthState state) {
+  void _loginStateListener(BuildContext context, AuthState state) async {
     if (state is AuthStateLoginSuccess) {
+      final fcmToken = await SpHelper.fcmToken;
+      final customerId = CacheManager.currentCustomer?.id;
+      
+      authBloc.add(
+        AuthEventUpdateFcm(customerId: customerId, fcmToken: fcmToken),
+      );
+    }
+    if (state is AuthStateUpdateFcmSuccess) {
       dbBloc.add(DbEventGetProductsWithCategoryFromServer());
     }
+
     if (state is AuthStateFail) {
       String? errorKey;
       if (state.error.code == 1) {
@@ -74,7 +83,6 @@ class _LoginPageState extends State<LoginPage> {
       callback: () {
         usernameFn.requestFocus();
         errorBloc.add(ErrorEventResert());
-        usernameFn.requestFocus();
       },
     );
   }

@@ -18,6 +18,15 @@ class AuthEventRegister extends AuthEvent {
   AuthEventRegister({required this.customer});
 }
 
+class AuthEventUpdateFcm extends AuthEvent {
+  final String? customerId;
+  final String? fcmToken;
+  AuthEventUpdateFcm({
+    required this.customerId,
+    required this.fcmToken,
+  });
+}
+
 class AuthEventUpdateCustomer extends AuthEvent {
   CustomerModel customer;
   AuthEventUpdateCustomer({required this.customer});

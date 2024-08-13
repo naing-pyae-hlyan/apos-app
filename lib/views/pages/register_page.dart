@@ -29,10 +29,11 @@ class _RegisterPageState extends State<RegisterPage> {
   final addressFn = FocusNode();
   final passwordFn = FocusNode();
 
-  void _register() {
+  void _register() async {
     errorBloc.add(ErrorEventResert());
     final password = passwordTxtCtrl.text;
     final hashPassword = HashUtils.hashPassword(password);
+    final fcmToken = await SpHelper.fcmToken;
     final customer = CustomerModel(
       readableId: RandomIdGenerator.getnerateProductUniqueId(),
       name: nameTxtCtrl.text,
@@ -41,6 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
       password: hashPassword,
       address: addressTxtCtrl.text,
       status: 1,
+      fcmToken: fcmToken,
       createdDate: DateTime.now(),
     );
     authBloc.add(AuthEventRegister(customer: customer));

@@ -1,5 +1,4 @@
 import 'package:apos_app/lib_exp.dart';
-import 'package:apos_app/models/error_model.dart';
 
 sealed class AuthState {}
 
@@ -15,6 +14,8 @@ class AuthStateFail extends AuthState {
 class AuthStateLoginSuccess extends AuthState {}
 
 class AuthStateRegisterSuccess extends AuthState {}
+
+class AuthStateUpdateFcmSuccess extends AuthState {}
 
 class AuthStateUpdateCustomerSuccess extends AuthState {
   final CustomerModel customer;

@@ -7,6 +7,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEventLogin>(_onLogin);
     on<AuthEventRegister>(_onRegister);
     on<AuthEventUpdateCustomer>(_onUpdateCustomer);
+    on<AuthEventUpdateFcm>(_onUpdateFcm);
+  }
+
+  Future<void> _onUpdateFcm(
+    AuthEventUpdateFcm event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthStateLoading());
+    await FFirestoreUtils.customerCollection
+        .doc(event.customerId)
+        .update({"fcm_token": event.fcmToken})
+        .then((_) => emit(AuthStateUpdateFcmSuccess()))
+        .catchError((_) => emit(AuthStateUpdateFcmSuccess()));
   }
 
   Future<void> _onLogin(
