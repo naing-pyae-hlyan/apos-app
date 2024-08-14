@@ -21,6 +21,7 @@ dependencies:
   shared_preferences: ^2.2.3
   crypto: ^3.0.3
   curved_navigation_bar: ^1.0.6
+  firebase_auth: ^5.1.4
 
 dev_dependencies:
   flutter_test:

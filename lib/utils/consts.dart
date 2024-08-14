@@ -20,6 +20,7 @@ class Consts {
   static const currencyGreen = Color(0xff27be38);
   static const currencyGreenDark = Color(0xff0b5a04);
   static const dividerColor = Color(0xffdbe2e6);
+  static const white = Colors.white;
 
   static const List<String> aToz = [
     "A",

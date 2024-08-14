@@ -15,8 +15,6 @@ class AuthStateLoginSuccess extends AuthState {}
 
 class AuthStateRegisterSuccess extends AuthState {}
 
-class AuthStateUpdateFcmSuccess extends AuthState {}
-
 class AuthStateUpdateCustomerSuccess extends AuthState {
   final CustomerModel customer;
   AuthStateUpdateCustomerSuccess(this.customer);

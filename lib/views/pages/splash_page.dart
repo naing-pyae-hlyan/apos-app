@@ -84,14 +84,6 @@ class _SplashPageState extends State<SplashPage> {
             context.pushAndRemoveUntil(const LoginPage());
           }
           if (state is AuthStateLoginSuccess) {
-            final fcmToken = await SpHelper.fcmToken;
-            final customerId = CacheManager.currentCustomer?.id;
-
-            authBloc.add(
-              AuthEventUpdateFcm(customerId: customerId, fcmToken: fcmToken),
-            );
-          }
-          if (state is AuthStateUpdateFcmSuccess) {
             dbBloc.add(DbEventGetProductsWithCategoryFromServer());
           }
         },

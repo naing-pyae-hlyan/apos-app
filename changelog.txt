@@ -3,6 +3,7 @@ flutter 3.22.0
 14/08/2024 (0.0.8)
 1. NEW: BottomNavBar using curve package.
 2. UPDATE: Account Edit password empty checkd.
+3. UPDATE: Removed fcm.
 
 13/08/2024 (0.0.7)
 1. NEW: FCM token is updated to each customer.
