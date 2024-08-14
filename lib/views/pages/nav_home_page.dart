@@ -26,7 +26,7 @@ class _NavHomePageState extends State<NavHomePage> {
       child: Scaffold(
         body: switch (_currentPage) {
           NavHomeEnum.products => const NavProductsPage(),
-          NavHomeEnum.fav => const NavNotiPage(),
+          NavHomeEnum.fav => const NavFavPage(),
           NavHomeEnum.orders => const NavOrdersPage(),
           NavHomeEnum.account => const NavAccountPage(),
         },

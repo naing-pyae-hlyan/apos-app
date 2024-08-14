@@ -1,5 +1,5 @@
 export 'nav_account/_exp.dart';
-export 'nav_noti/_exp.dart';
+export 'nav_fav/_exp.dart';
 export 'nav_orders/_exp.dart';
 export 'nav_products/_exp.dart';
 
