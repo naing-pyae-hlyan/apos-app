@@ -31,8 +31,7 @@ class _AccountEditPageState extends State<AccountEditPage> {
 
   void _onUpdate() {
     errorBloc.add(ErrorEventResert());
-    final password = passwordTxtCtrl.text;
-    final hashPassword = HashUtils.hashPassword(password);
+
     if (CacheManager.currentCustomer?.id == null ||
         CacheManager.currentCustomer?.readableId == null) {
       return;
@@ -45,7 +44,7 @@ class _AccountEditPageState extends State<AccountEditPage> {
       name: nameTxtCtrl.text,
       email: emailTxtCtrl.text,
       phone: phoneTxtCtrl.text,
-      password: hashPassword,
+      password: passwordTxtCtrl.text,
       address: addressTxtCtrl.text,
       fcmToken: CacheManager.currentCustomer!.fcmToken,
       createdDate: CacheManager.currentCustomer!.createdDate,

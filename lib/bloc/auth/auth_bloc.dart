@@ -154,13 +154,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(_authStateFail(message: "Enter Address", code: 4));
       return;
     }
+
     if (event.customer.password?.isEmpty == true) {
       emit(_authStateFail(message: "Enter Password", code: 5));
       return;
     }
 
+    final hashPassword = HashUtils.hashPassword(event.customer.password ?? "");
     final storedPassword = await SpHelper.password;
-    if (event.customer.password != storedPassword) {
+    if (hashPassword != storedPassword) {
       emit(_authStateFail(message: "Password does not match", code: 5));
       return;
     }

@@ -1,6 +1,7 @@
 import 'package:apos_app/lib_exp.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
-enum NavHomeEnum { products, orders, noti, account }
+enum NavHomeEnum { products, fav, orders, account }
 
 class NavHomePage extends StatefulWidget {
   const NavHomePage({super.key});
@@ -21,79 +22,43 @@ class _NavHomePageState extends State<NavHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: [
-        SafeArea(
-          child: Scaffold(
-            body: switch (_currentPage) {
-              NavHomeEnum.products => const NavProductsPage(),
-              NavHomeEnum.orders => const NavOrdersPage(),
-              NavHomeEnum.noti => const NavNotiPage(),
-              NavHomeEnum.account => const NavAccountPage(),
-            },
-          ),
+    return SafeArea(
+      child: Scaffold(
+        body: switch (_currentPage) {
+          NavHomeEnum.products => const NavProductsPage(),
+          NavHomeEnum.fav => const NavNotiPage(),
+          NavHomeEnum.orders => const NavOrdersPage(),
+          NavHomeEnum.account => const NavAccountPage(),
+        },
+        bottomNavigationBar: CurvedNavigationBar(
+          color: Consts.secondaryColor,
+          backgroundColor: Consts.primaryColor,
+          buttonBackgroundColor: Consts.secondaryColor,
+          height: 56,
+          items: const [
+            Icon(Icons.dashboard, color: Consts.primaryColor, size: 30),
+            Icon(Icons.favorite, color: Consts.primaryColor, size: 30),
+            Icon(Icons.receipt_long, color: Consts.primaryColor, size: 30),
+            Icon(Icons.person, color: Consts.primaryColor, size: 30),
+          ],
+          onTap: (int index) {
+            switch (index) {
+              case 0:
+                _onDidChangedNavBar(NavHomeEnum.products);
+                break;
+              case 1:
+                _onDidChangedNavBar(NavHomeEnum.fav);
+                break;
+              case 2:
+                _onDidChangedNavBar(NavHomeEnum.orders);
+                break;
+              case 3:
+                _onDidChangedNavBar(NavHomeEnum.account);
+                break;
+            }
+          },
         ),
-        Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(32.0),
-          ),
-          margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-          elevation: 16,
-          surfaceTintColor: Colors.white,
-          color: Colors.white,
-          shadowColor: Consts.secondaryColor,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _navIconButton(
-                icon: Icons.dashboard,
-                label: 'Home',
-                isActive: _currentPage == NavHomeEnum.products,
-                onTap: () => _onDidChangedNavBar(NavHomeEnum.products),
-              ),
-              _navIconButton(
-                icon: Icons.receipt,
-                label: 'Orders',
-                isActive: _currentPage == NavHomeEnum.orders,
-                onTap: () => _onDidChangedNavBar(NavHomeEnum.orders),
-              ),
-              // _navIconButton(
-              //   icon: Icons.notifications,
-              //   label: 'Noti',
-              //   isActive: _currentPage == NavHomeEnum.noti,
-              //   onTap: () => _onDidChangedNavBar(NavHomeEnum.noti),
-              // ),
-              _navIconButton(
-                icon: Icons.person,
-                label: 'Account',
-                isActive: _currentPage == NavHomeEnum.account,
-                onTap: () => _onDidChangedNavBar(NavHomeEnum.account),
-              ),
-            ],
-          ),
-        ),
-      ],
+      ),
     );
   }
-
-  Widget _navIconButton({
-    required IconData icon,
-    required String label,
-    required bool isActive,
-    required Function() onTap,
-  }) =>
-      IconButton(
-        isSelected: isActive,
-        icon: Icon(
-          icon,
-          size: isActive ? 24 : 18,
-          shadows: const [Shadow(color: Consts.secondaryColor, blurRadius: 16)],
-          color: isActive
-              ? Consts.primaryColor
-              : Consts.primaryColor.withOpacity(0.45),
-        ),
-        onPressed: onTap,
-      );
 }
