@@ -37,7 +37,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Consts.primaryColor,
+      backgroundColor: Consts.scaffoldBackgroundColor,
       body: BlocListener<AuthBloc, AuthState>(
         child: BlocListener<DbBloc, DbState>(
           child: Center(
@@ -51,14 +51,14 @@ class _SplashPageState extends State<SplashPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       myTitle(
-                        "Hello There",
+                        Consts.appName,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Consts.primaryColor,
                         fontSize: 24,
                       ),
                       verticalHeight32,
                       LoadingAnimationWidget.threeArchedCircle(
-                        color: Colors.white,
+                        color: Consts.primaryColor,
                         size: 50,
                       ),
                     ],
