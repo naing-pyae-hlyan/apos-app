@@ -1,5 +1,4 @@
 import 'package:apos_app/lib_exp.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 const _userNameErrorKey = "user-name-error-key";
 const _userEmailErrorKey = "user-email-error-key";
@@ -45,52 +44,28 @@ class _RegisterPageState extends State<RegisterPage> {
       status: 1,
       fcmToken: fcmToken,
       createdDate: DateTime.now(),
+      favourites: {},
     );
-
-    authBloc.add(AuthEventVaidateRegister(customer));
-    // authBloc.add(AuthEventRegister(customer: customer));
-  }
-
-  Future<void> _onRegister(CustomerModel customer) async {
-    FAUtils.auth.verifyPhoneNumber(
-      phoneNumber: customer.phone.replaceFirst("0", "+95"),
-      verificationFailed: (FirebaseAuthException exception) {
-        errorBloc.add(ErrorEventSetError(
-          errorKey: _userPasswordErrorKey,
-          error: ErrorModel(
-            message: exception.message ?? "FirebaseAuthException",
-          ),
-        ));
-      },
-      codeSent: (id, token) {
-        authBloc.add(AuthEventLoading());
-        showOTPDialog(
-          context,
-          verificationId: id,
-          onSuccess: (User user) {
-            authBloc.add(
-              AuthEventRegisterToFirestore(customer: customer),
-            );
-          },
-        );
-      },
-      codeAutoRetrievalTimeout: (id) {},
-      verificationCompleted: (AuthCredential credential) async {},
-    );
+    authBloc.add(AuthEventRegisterRequestOTP(customer: customer));
   }
 
   void _registerStateListener(BuildContext context, AuthState state) {
-    if (state is AuthStateRegisterValidateSuccess) {
-      _onRegister(state.customer);
-    }
-
-    if (state is AuthStateRegisterToFirestoreSuccess) {
+    if (state is AuthStateRegisterSuccess) {
       showSuccessDialog(
         context,
         message: "Register success",
         onTapOk: () {
           //close current register page
           context.pop();
+        },
+      );
+    }
+
+    if (state is AuthStateRegisterRequestOTP) {
+      showOTPDialog(
+        context,
+        onSuccess: () {
+          authBloc.add(AuthEventRegisterActivate(state.customer));
         },
       );
     }

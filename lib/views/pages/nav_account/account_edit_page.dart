@@ -48,6 +48,7 @@ class _AccountEditPageState extends State<AccountEditPage> {
       address: addressTxtCtrl.text,
       fcmToken: CacheManager.currentCustomer!.fcmToken,
       createdDate: CacheManager.currentCustomer!.createdDate,
+      favourites: CacheManager.currentCustomer?.favourites ?? {},
     );
     authBloc.add(AuthEventUpdateCustomer(customer: customer));
   }

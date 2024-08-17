@@ -3,7 +3,7 @@ import 'package:apos_app/lib_exp.dart';
 const heroTagCart = "hero-tag-cart";
 
 class Consts {
-  static const appName = "aPOS";
+  static const appName = "Flutter E-Commerce";
 
   static const primaryColor = Color(0xff9c28b1);
   static const primaryFontColor = Color(0xff012d3b);

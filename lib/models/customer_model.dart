@@ -11,7 +11,7 @@ class CustomerModel {
   final int status;
   final String? fcmToken;
   final DateTime createdDate;
-  // final Map<String, List<String>> favourites;
+  final Map<String, List<String>> favourites;
 
   CustomerModel({
     this.id,
@@ -24,7 +24,7 @@ class CustomerModel {
     required this.status,
     required this.fcmToken,
     required this.createdDate,
-    // required this.favourites,
+    required this.favourites,
   });
 
   factory CustomerModel.fromJson(Map<String, dynamic> json, String? id) {
@@ -40,6 +40,11 @@ class CustomerModel {
       status: json['status'] ?? 1,
       fcmToken: json['fcm_token'],
       createdDate: timestamp.toDate(),
+      favourites: json["favourites"] == null
+          ? {}
+          : Map.from(json["favourites"]).map((k, v) =>
+              MapEntry<String, List<String>>(
+                  k, List<String>.from(v.map((x) => x)))),
     );
   }
 
@@ -54,6 +59,8 @@ class CustomerModel {
       'status': status,
       'fcm_token': fcmToken,
       'created_date': createdDate,
+      'favourites': Map.from(favourites).map((k, v) =>
+          MapEntry<String, dynamic>(k, List<dynamic>.from(v.map((x) => x)))),
     };
   }
 }

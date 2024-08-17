@@ -1,51 +1,61 @@
 import 'package:apos_app/lib_exp.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 void showOTPDialog(
   BuildContext context, {
-  required String verificationId,
-  required Function(User) onSuccess,
+  required Function() onSuccess,
 }) =>
     showAdaptiveDialog(
       context: context,
       barrierDismissible: false,
       builder: (_) => _OTPDialog(
-        verificationId: verificationId,
         onSuccess: onSuccess,
       ),
     );
 
 class _OTPDialog extends StatefulWidget {
-  final String verificationId;
-  final Function(User) onSuccess;
-  const _OTPDialog({required this.verificationId, required this.onSuccess});
+  final Function() onSuccess;
+  const _OTPDialog({
+    required this.onSuccess,
+  });
 
   @override
   State<_OTPDialog> createState() => __OTPDialogState();
 }
 
 class __OTPDialogState extends State<_OTPDialog> {
+  ValueNotifier<String> errorListener = ValueNotifier("");
+  String? _otp;
   final pinTxtCtrl = TextEditingController();
   void _verifyOTP() async {
+    errorListener.value = "";
     final otp = pinTxtCtrl.text.trim();
-    final credential = PhoneAuthProvider.credential(
-      verificationId: widget.verificationId,
-      smsCode: otp,
-    );
-    final result = await FAUtils.auth.signInWithCredential(credential);
-    final user = result.user;
 
-    if (mounted && user != null) {
-      context.pop();
-      widget.onSuccess(user);
+    if (otp != _otp) {
+      errorListener.value = "Invalid OTP";
+      return;
     }
+    // close current otp dialog
+    context.pop();
+    widget.onSuccess();
   }
 
   @override
   void dispose() {
-    if (mounted) pinTxtCtrl.dispose();
+    // if (mounted) pinTxtCtrl.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    doAfterBuild(callback: () {
+      LocalNotiService.showOTP(
+        generatedOTP: (otp) {
+          _otp = otp;
+        },
+      );
+    });
   }
 
   @override
@@ -71,6 +81,16 @@ class __OTPDialogState extends State<_OTPDialog> {
               onCompleted: (_) => _verifyOTP(),
             ),
           ),
+          verticalHeight8,
+          Align(
+            alignment: Alignment.centerLeft,
+            child: ValueListenableBuilder(
+              valueListenable: errorListener,
+              builder: (_, String value, __) {
+                return errorText(value);
+              },
+            ),
+          ),
         ],
       ),
       actions: [
@@ -79,14 +99,14 @@ class __OTPDialogState extends State<_OTPDialog> {
             _verifyOTP();
           },
           style: TextButton.styleFrom(
-            backgroundColor: Colors.green[50],
-            surfaceTintColor: Colors.green[50],
+            backgroundColor: Colors.green,
+            surfaceTintColor: Colors.green,
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32),
             child: myText(
               "VERIFY",
-              color: Colors.green,
+              color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
           ),

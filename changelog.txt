@@ -2,6 +2,7 @@ flutter 3.22.0
 
 17/08/2024 (0.0.9)
 1. NEW: RegisterWithPhone.
+2. UPDATE: Removed RegisterWithPhone && update local notification.
 
 14/08/2024 (0.0.8)
 1. NEW: BottomNavBar using curve package.

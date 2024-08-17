@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:apos_app/lib_exp.dart';
+
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthStateInitial()) {
     on<AuthEventLoading>(_onLoading);
-    on<AuthEventVaidateRegister>(_onRegisterValidate);
     on<AuthEventLogin>(_onLogin);
-    on<AuthEventRegisterToFirestore>(_onRegisterToFirestore);
+    on<AuthEventRegisterRequestOTP>(_onRegisterRequestOTP);
+    on<AuthEventRegisterActivate>(_onRegisterActivate);
     on<AuthEventUpdateCustomer>(_onUpdateCustomer);
   }
 
@@ -14,39 +15,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthStateLoading());
-  }
-
-  Future<void> _onRegisterValidate(
-    AuthEventVaidateRegister event,
-    Emitter<AuthState> emit,
-  ) async {
-    emit(AuthStateLoading());
-    if (event.customer.name.isEmpty) {
-      emit(_authStateFail(message: "Enter Name", code: 1));
-      return;
-    }
-
-    if (event.customer.email.isEmpty) {
-      emit(_authStateFail(message: "Enter Email", code: 2));
-      return;
-    }
-
-    if (event.customer.phone.isEmpty) {
-      emit(_authStateFail(message: "Enter Phone", code: 3));
-      return;
-    }
-
-    if (event.customer.address.isEmpty) {
-      emit(_authStateFail(message: "Enter Address", code: 4));
-      return;
-    }
-
-    if (event.customer.password?.isEmpty == true) {
-      emit(_authStateFail(message: "Enter Password", code: 5));
-      return;
-    }
-
-    emit(AuthStateRegisterValidateSuccess(event.customer));
   }
 
   Future<void> _onLogin(
@@ -94,41 +62,73 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
   }
 
-  Future<void> _onRegisterToFirestore(
-    AuthEventRegisterToFirestore event,
+  Future<void> _onRegisterRequestOTP(
+    AuthEventRegisterRequestOTP event,
     Emitter<AuthState> emit,
   ) async {
     emit(AuthStateLoading());
+
+    if (event.customer.name.isEmpty) {
+      emit(_authStateFail(message: "Enter Name", code: 1));
+      return;
+    }
+
+    if (event.customer.email.isEmpty) {
+      emit(_authStateFail(message: "Enter Email", code: 2));
+      return;
+    }
+
+    if (event.customer.phone.isEmpty) {
+      emit(_authStateFail(message: "Enter Phone", code: 3));
+      return;
+    }
+
+    if (event.customer.address.isEmpty) {
+      emit(_authStateFail(message: "Enter Address", code: 4));
+      return;
+    }
+
+    if (event.customer.password?.isEmpty == true) {
+      emit(_authStateFail(message: "Enter Password", code: 5));
+      return;
+    }
 
     await FFirestoreUtils.customerCollection.get().then(
       (QuerySnapshot<CustomerModel> snapshot) async {
         bool alreadyRegistered = false;
         for (var doc in snapshot.docs) {
-          if (event.customer.email == doc.data().email) {
+          if (event.customer.phone == doc.data().phone) {
             alreadyRegistered = true;
             break;
           }
         }
         if (alreadyRegistered) {
           emit(_authStateFail(
-            message: "Your email is already registered.",
-            code: 2,
+            message: "Your phone is already registered.",
+            code: 3,
           ));
           return;
         }
-
-        await FFirestoreUtils.customerCollection
-            .add(event.customer)
-            .then((_) => emit(AuthStateRegisterToFirestoreSuccess()))
-            .catchError(
-              (error) => emit(
-                _authStateFail(message: error.toString(), code: 5),
-              ),
-            );
+        emit(AuthStateRegisterRequestOTP(event.customer));
       },
     ).catchError((error) {
       emit(_authStateFail(message: error.toString(), code: 5));
     });
+  }
+
+  Future<void> _onRegisterActivate(
+    AuthEventRegisterActivate event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthStateLoading());
+    await FFirestoreUtils.customerCollection
+        .add(event.customer)
+        .then((_) => emit(AuthStateRegisterSuccess()))
+        .catchError(
+          (error) => emit(
+            _authStateFail(message: error.toString(), code: 5),
+          ),
+        );
   }
 
   Future<void> _onUpdateCustomer(

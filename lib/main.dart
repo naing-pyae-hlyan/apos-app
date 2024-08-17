@@ -11,6 +11,8 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  await LocalNotiService.initialize();
+
   runApp(
     MultiBlocProvider(
       providers: [
@@ -31,7 +33,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "aPOS-App",
+      title: Consts.appName,
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       theme: ThemeData(
