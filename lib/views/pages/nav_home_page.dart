@@ -1,5 +1,6 @@
 import 'package:apos_app/lib_exp.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
+import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 
 enum NavHomeEnum { products, fav, orders, account }
 
@@ -11,54 +12,76 @@ class NavHomePage extends StatefulWidget {
 }
 
 class _NavHomePageState extends State<NavHomePage> {
-  NavHomeEnum _currentPage = NavHomeEnum.products;
+  int _selectedIndex = 0;
 
-  void _onDidChangedNavBar(NavHomeEnum navItem) {
-    if (navItem == _currentPage) return;
+  void _onDidChangedNavBar(int index) {
+    if (index == _selectedIndex) return;
     setState(() {
-      _currentPage = navItem;
+      _selectedIndex = index;
     });
   }
+
+  final List<Widget> _tabs = const [
+    NavProductsPage(),
+    NavFavPage(),
+    NavOrdersPage(),
+    NavAccountPage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: switch (_currentPage) {
-          NavHomeEnum.products => const NavProductsPage(),
-          NavHomeEnum.fav => const NavFavPage(),
-          NavHomeEnum.orders => const NavOrdersPage(),
-          NavHomeEnum.account => const NavAccountPage(),
-        },
+        body: _tabs[_selectedIndex],
         bottomNavigationBar: CurvedNavigationBar(
-          color: Consts.secondaryColor,
-          backgroundColor: Consts.primaryColor,
-          buttonBackgroundColor: Consts.secondaryColor,
+          color: Consts.primaryColor,
+          backgroundColor: Consts.scaffoldBackgroundColor,
+          buttonBackgroundColor: Consts.primaryColor,
           height: 56,
-          items: const [
-            Icon(Icons.dashboard, color: Consts.primaryColor, size: 30),
-            Icon(Icons.favorite, color: Consts.primaryColor, size: 30),
-            Icon(Icons.receipt_long, color: Consts.primaryColor, size: 30),
-            Icon(Icons.person, color: Consts.primaryColor, size: 30),
+          items: [
+            CurvedNavigationBarItem(
+              child: const Icon(
+                Icons.home_rounded,
+                size: 30,
+              ),
+              label: "Home",
+              labelStyle: navBarLabelStyle,
+            ),
+            CurvedNavigationBarItem(
+              child: const Icon(
+                Icons.favorite,
+                size: 30,
+              ),
+              label: "Favorite",
+              labelStyle: navBarLabelStyle,
+            ),
+            CurvedNavigationBarItem(
+              child: const Icon(
+                Icons.receipt_long,
+                size: 30,
+              ),
+              label: "Orders",
+              labelStyle: navBarLabelStyle,
+            ),
+            CurvedNavigationBarItem(
+              child: const Icon(
+                Icons.account_circle_rounded,
+                size: 30,
+              ),
+              label: "Account",
+              labelStyle: navBarLabelStyle,
+            ),
           ],
           onTap: (int index) {
-            switch (index) {
-              case 0:
-                _onDidChangedNavBar(NavHomeEnum.products);
-                break;
-              case 1:
-                _onDidChangedNavBar(NavHomeEnum.fav);
-                break;
-              case 2:
-                _onDidChangedNavBar(NavHomeEnum.orders);
-                break;
-              case 3:
-                _onDidChangedNavBar(NavHomeEnum.account);
-                break;
-            }
+            _onDidChangedNavBar(index);
           },
         ),
       ),
     );
   }
+
+  TextStyle get navBarLabelStyle => const TextStyle(
+        color: Colors.white,
+        overflow: TextOverflow.ellipsis,
+      );
 }

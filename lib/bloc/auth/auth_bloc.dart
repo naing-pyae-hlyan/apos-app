@@ -1,14 +1,52 @@
 import 'dart:async';
-
 import 'package:apos_app/lib_exp.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthStateInitial()) {
+    on<AuthEventLoading>(_onLoading);
+    on<AuthEventVaidateRegister>(_onRegisterValidate);
     on<AuthEventLogin>(_onLogin);
-    on<AuthEventRegisterToFirebaseAuth>(_onRegisterToFirebaseAuth);
     on<AuthEventRegisterToFirestore>(_onRegisterToFirestore);
     on<AuthEventUpdateCustomer>(_onUpdateCustomer);
+  }
+
+  Future<void> _onLoading(
+    AuthEventLoading event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthStateLoading());
+  }
+
+  Future<void> _onRegisterValidate(
+    AuthEventVaidateRegister event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthStateLoading());
+    if (event.customer.name.isEmpty) {
+      emit(_authStateFail(message: "Enter Name", code: 1));
+      return;
+    }
+
+    if (event.customer.email.isEmpty) {
+      emit(_authStateFail(message: "Enter Email", code: 2));
+      return;
+    }
+
+    if (event.customer.phone.isEmpty) {
+      emit(_authStateFail(message: "Enter Phone", code: 3));
+      return;
+    }
+
+    if (event.customer.address.isEmpty) {
+      emit(_authStateFail(message: "Enter Address", code: 4));
+      return;
+    }
+
+    if (event.customer.password?.isEmpty == true) {
+      emit(_authStateFail(message: "Enter Password", code: 5));
+      return;
+    }
+
+    emit(AuthStateRegisterValidateSuccess(event.customer));
   }
 
   Future<void> _onLogin(
@@ -53,60 +91,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       },
     ).catchError((error) {
       emit(_authStateFail(message: error.toString(), code: 2));
-    });
-  }
-
-  Future<void> _onRegisterToFirebaseAuth(
-    AuthEventRegisterToFirebaseAuth event,
-    Emitter<AuthState> emit,
-  ) async {
-    emit(AuthStateLoading());
-    if (event.customer.name.isEmpty) {
-      emit(_authStateFail(message: "Enter Name", code: 1));
-      return;
-    }
-
-    if (event.customer.email.isEmpty) {
-      emit(_authStateFail(message: "Enter Email", code: 2));
-      return;
-    }
-
-    if (event.customer.phone.isEmpty) {
-      emit(_authStateFail(message: "Enter Phone", code: 3));
-      return;
-    }
-
-    if (event.customer.address.isEmpty) {
-      emit(_authStateFail(message: "Enter Address", code: 4));
-      return;
-    }
-
-    if (event.customer.password?.isEmpty == true) {
-      emit(_authStateFail(message: "Enter Password", code: 5));
-      return;
-    }
-
-    await FAUtils.auth
-        .createUserWithEmailAndPassword(
-      email: event.customer.email,
-      password: event.customer.password!,
-    )
-        .then(
-      (UserCredential credential) async {
-        await credential.user
-            ?.sendEmailVerification()
-            .then((_) => emit(AuthStateRegisterSendVerification(
-                  user: credential.user,
-                  customer: event.customer,
-                )))
-            .catchError(
-          (error) {
-            emit(_authStateFail(message: error.toString(), code: 5));
-          },
-        );
-      },
-    ).catchError((error) {
-      emit(_authStateFail(message: error.toString(), code: 5));
     });
   }
 

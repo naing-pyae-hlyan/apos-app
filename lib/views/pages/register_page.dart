@@ -47,16 +47,43 @@ class _RegisterPageState extends State<RegisterPage> {
       createdDate: DateTime.now(),
     );
 
-    authBloc.add(AuthEventRegisterToFirebaseAuth(customer: customer));
+    authBloc.add(AuthEventVaidateRegister(customer));
     // authBloc.add(AuthEventRegister(customer: customer));
   }
 
+  Future<void> _onRegister(CustomerModel customer) async {
+    FAUtils.auth.verifyPhoneNumber(
+      phoneNumber: customer.phone.replaceFirst("0", "+95"),
+      verificationFailed: (FirebaseAuthException exception) {
+        errorBloc.add(ErrorEventSetError(
+          errorKey: _userPasswordErrorKey,
+          error: ErrorModel(
+            message: exception.message ?? "FirebaseAuthException",
+          ),
+        ));
+      },
+      codeSent: (id, token) {
+        authBloc.add(AuthEventLoading());
+        showOTPDialog(
+          context,
+          verificationId: id,
+          onSuccess: (User user) {
+            authBloc.add(
+              AuthEventRegisterToFirestore(customer: customer),
+            );
+          },
+        );
+      },
+      codeAutoRetrievalTimeout: (id) {},
+      verificationCompleted: (AuthCredential credential) async {},
+    );
+  }
+
   void _registerStateListener(BuildContext context, AuthState state) {
-    if (state is AuthStateRegisterSendVerification) {
-      if (state.user != null) {
-        showOTPDialog(context, user: state.user!);
-      }
+    if (state is AuthStateRegisterValidateSuccess) {
+      _onRegister(state.customer);
     }
+
     if (state is AuthStateRegisterToFirestoreSuccess) {
       showSuccessDialog(
         context,

@@ -14,13 +14,9 @@ class AuthStateFail extends AuthState {
 
 class AuthStateLoginSuccess extends AuthState {}
 
-class AuthStateRegisterSendVerification extends AuthState {
-  final User? user;
+class AuthStateRegisterValidateSuccess extends AuthState {
   final CustomerModel customer;
-  AuthStateRegisterSendVerification({
-    required this.user,
-    required this.customer,
-  });
+  AuthStateRegisterValidateSuccess(this.customer);
 }
 
 class AuthStateRegisterToFirestoreSuccess extends AuthState {}

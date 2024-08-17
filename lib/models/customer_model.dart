@@ -11,6 +11,7 @@ class CustomerModel {
   final int status;
   final String? fcmToken;
   final DateTime createdDate;
+  // final Map<String, List<String>> favourites;
 
   CustomerModel({
     this.id,
@@ -23,6 +24,7 @@ class CustomerModel {
     required this.status,
     required this.fcmToken,
     required this.createdDate,
+    // required this.favourites,
   });
 
   factory CustomerModel.fromJson(Map<String, dynamic> json, String? id) {
