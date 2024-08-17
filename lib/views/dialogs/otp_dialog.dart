@@ -44,7 +44,7 @@ class __OTPDialogState extends State<_OTPDialog> {
 
   @override
   void dispose() {
-    pinTxtCtrl.dispose();
+    if (mounted) pinTxtCtrl.dispose();
     super.dispose();
   }
 
@@ -54,8 +54,9 @@ class __OTPDialogState extends State<_OTPDialog> {
       backgroundColor: Colors.white,
       surfaceTintColor: Colors.white,
       shadowColor: Consts.secondaryColor,
-      title: myTitle("OTP", textAlign: TextAlign.center),
+      title: myTitle("OTP Verify", textAlign: TextAlign.center),
       content: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           myText("Enter the OTP sent to your phone"),
           verticalHeight8,
@@ -63,8 +64,10 @@ class __OTPDialogState extends State<_OTPDialog> {
             width: context.screenWidth * 0.7,
             child: PinCodeTextField(
               appContext: context,
+              autoFocus: true,
               controller: pinTxtCtrl,
               length: 6,
+              cursorColor: Consts.primaryColor,
               onCompleted: (_) => _verifyOTP(),
             ),
           ),
@@ -82,7 +85,7 @@ class __OTPDialogState extends State<_OTPDialog> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32),
             child: myText(
-              "OK",
+              "VERIFY",
               color: Colors.green,
               fontWeight: FontWeight.bold,
             ),

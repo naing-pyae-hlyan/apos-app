@@ -21,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   final passwordFn = FocusNode();
 
   void _login() {
+    errorBloc.add(ErrorEventResert());
     final password = passwordTxtCtrl.text;
     final hashPassword = HashUtils.hashPassword(password);
     authBloc.add(AuthEventLogin(
