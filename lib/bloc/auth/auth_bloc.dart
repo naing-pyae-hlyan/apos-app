@@ -1,15 +1,16 @@
 import 'dart:async';
 
 import 'package:apos_app/lib_exp.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthStateInitial()) {
     on<AuthEventLogin>(_onLogin);
-    on<AuthEventRegister>(_onRegister);
+    on<AuthEventRegisterToFirebaseAuth>(_onRegisterToFirebaseAuth);
+    on<AuthEventRegisterToFirestore>(_onRegisterToFirestore);
     on<AuthEventUpdateCustomer>(_onUpdateCustomer);
   }
 
- 
   Future<void> _onLogin(
     AuthEventLogin event,
     Emitter<AuthState> emit,
@@ -55,12 +56,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
   }
 
-  Future<void> _onRegister(
-    AuthEventRegister event,
+  Future<void> _onRegisterToFirebaseAuth(
+    AuthEventRegisterToFirebaseAuth event,
     Emitter<AuthState> emit,
   ) async {
     emit(AuthStateLoading());
-
     if (event.customer.name.isEmpty) {
       emit(_authStateFail(message: "Enter Name", code: 1));
       return;
@@ -86,6 +86,36 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       return;
     }
 
+    await FAUtils.auth
+        .createUserWithEmailAndPassword(
+      email: event.customer.email,
+      password: event.customer.password!,
+    )
+        .then(
+      (UserCredential credential) async {
+        await credential.user
+            ?.sendEmailVerification()
+            .then((_) => emit(AuthStateRegisterSendVerification(
+                  user: credential.user,
+                  customer: event.customer,
+                )))
+            .catchError(
+          (error) {
+            emit(_authStateFail(message: error.toString(), code: 5));
+          },
+        );
+      },
+    ).catchError((error) {
+      emit(_authStateFail(message: error.toString(), code: 5));
+    });
+  }
+
+  Future<void> _onRegisterToFirestore(
+    AuthEventRegisterToFirestore event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthStateLoading());
+
     await FFirestoreUtils.customerCollection.get().then(
       (QuerySnapshot<CustomerModel> snapshot) async {
         bool alreadyRegistered = false;
@@ -105,7 +135,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
         await FFirestoreUtils.customerCollection
             .add(event.customer)
-            .then((_) => emit(AuthStateRegisterSuccess()))
+            .then((_) => emit(AuthStateRegisterToFirestoreSuccess()))
             .catchError(
               (error) => emit(
                 _authStateFail(message: error.toString(), code: 5),

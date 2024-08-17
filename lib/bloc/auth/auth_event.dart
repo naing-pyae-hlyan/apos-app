@@ -13,9 +13,14 @@ class AuthEventLogin extends AuthEvent {
   });
 }
 
-class AuthEventRegister extends AuthEvent {
+class AuthEventRegisterToFirebaseAuth extends AuthEvent {
+  final CustomerModel customer;
+  AuthEventRegisterToFirebaseAuth({required this.customer});
+}
+
+class AuthEventRegisterToFirestore extends AuthEvent {
   CustomerModel customer;
-  AuthEventRegister({required this.customer});
+  AuthEventRegisterToFirestore({required this.customer});
 }
 
 class AuthEventUpdateCustomer extends AuthEvent {

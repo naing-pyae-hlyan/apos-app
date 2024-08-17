@@ -1,4 +1,5 @@
 import 'package:apos_app/lib_exp.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 const _userNameErrorKey = "user-name-error-key";
 const _userEmailErrorKey = "user-email-error-key";
@@ -29,7 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final addressFn = FocusNode();
   final passwordFn = FocusNode();
 
-  void _register() async {
+  Future<void> _register() async {
     errorBloc.add(ErrorEventResert());
     final password = passwordTxtCtrl.text;
     final hashPassword = HashUtils.hashPassword(password);
@@ -45,11 +46,18 @@ class _RegisterPageState extends State<RegisterPage> {
       fcmToken: fcmToken,
       createdDate: DateTime.now(),
     );
-    authBloc.add(AuthEventRegister(customer: customer));
+
+    authBloc.add(AuthEventRegisterToFirebaseAuth(customer: customer));
+    // authBloc.add(AuthEventRegister(customer: customer));
   }
 
   void _registerStateListener(BuildContext context, AuthState state) {
-    if (state is AuthStateRegisterSuccess) {
+    if (state is AuthStateRegisterSendVerification) {
+      if (state.user != null) {
+        showOTPDialog(context, user: state.user!);
+      }
+    }
+    if (state is AuthStateRegisterToFirestoreSuccess) {
       showSuccessDialog(
         context,
         message: "Register success",
