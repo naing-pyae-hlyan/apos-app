@@ -91,3 +91,14 @@ String? getFirstProductImageById(String? id) {
   }
   return image;
 }
+
+String? parsePayMethodToLogo(String payment) {
+  String? pay;
+  for (MMBank bank in Consts.bankLogoList) {
+    if (payment == bank.name) {
+      pay = bank.logo;
+      break;
+    }
+  }
+  return pay;
+}

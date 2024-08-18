@@ -2,6 +2,8 @@ import 'package:apos_app/lib_exp.dart';
 
 const heroTagCart = "hero-tag-cart";
 
+typedef MMBank = ({String logo, String name});
+
 class Consts {
   static const appName = "Flutter E-Commerce";
 
@@ -64,6 +66,19 @@ class Consts {
     ProductColorModel(name: "Silver", hex: 0xFFC0C0C0, status: false),
     ProductColorModel(name: "Brown", hex: 0xFF795548, status: false),
     ProductColorModel(name: "Grey", hex: 0xFF808080, status: false),
+  ];
+
+  static final bankLogoList = <MMBank>[
+    (logo: "assets/banks/abank.png", name: "A Bank"),
+    (logo: "assets/banks/aya.png", name: "Aya Bank"),
+    (logo: "assets/banks/cbpay.png", name: "CB Pay"),
+    (logo: "assets/banks/kbzpay.png", name: "KBZ Pay"),
+    (logo: "assets/banks/mab.png", name: "MAB Bank"),
+    (logo: "assets/banks/okdollar.png", name: "Ok Dollar"),
+    (logo: "assets/banks/onepay.png", name: "One Pay"),
+    (logo: "assets/banks/truemoney.png", name: "Truemoney"),
+    (logo: "assets/banks/uab.png", name: "UAB Bank"),
+    (logo: "assets/banks/wavepay.png", name: "Wave Pay"),
   ];
 }
 

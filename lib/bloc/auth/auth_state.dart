@@ -6,6 +6,8 @@ class AuthStateInitial extends AuthState {}
 
 class AuthStateLoading extends AuthState {}
 
+class AuthStateLoadingStop extends AuthState {}
+
 class AuthStateFail extends AuthState {
   final ErrorModel error;
   AuthStateFail({required this.error});

@@ -4,6 +4,7 @@ import 'package:apos_app/lib_exp.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthStateInitial()) {
     on<AuthEventLoading>(_onLoading);
+    on<AuthEventLoadingStop>(_onLoadingStop);
     on<AuthEventLogin>(_onLogin);
     on<AuthEventRegisterRequestOTP>(_onRegisterRequestOTP);
     on<AuthEventRegisterActivate>(_onRegisterActivate);
@@ -15,6 +16,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthStateLoading());
+  }
+
+  Future<void> _onLoadingStop(
+    AuthEventLoadingStop event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthStateLoadingStop());
   }
 
   Future<void> _onLogin(

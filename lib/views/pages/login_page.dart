@@ -53,13 +53,13 @@ class _LoginPageState extends State<LoginPage> {
 
   void _dbStateListener(BuildContext context, DbState state) {
     if (state is DbStateGetProductsWithCategoryFromServerSuccess) {
-      LoadingDialog.hide();
+      authBloc.add(AuthEventLoadingStop());
       context.pushAndRemoveUntil(const NavHomePage());
       return;
     }
 
     if (state is DbStateFail) {
-      LoadingDialog.hide();
+      authBloc.add(AuthEventLoadingStop());
       showErrorDialog(
         context,
         title: "Server Error",

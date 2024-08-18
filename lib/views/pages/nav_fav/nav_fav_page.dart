@@ -11,7 +11,15 @@ class _NavFavPageState extends State<NavFavPage> {
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
-      body: Center(child: myText("Fav")),
+      body: Center(
+          child: MyButton(
+        onPressed: () => showPaymentDialog(
+          context,
+          onSelectedBank: (String bank) {},
+        ),
+        label: "Lee",
+        icon: Icons.abc,
+      )),
     );
   }
 }

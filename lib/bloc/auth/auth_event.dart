@@ -15,6 +15,8 @@ class AuthEventLogin extends AuthEvent {
 
 class AuthEventLoading extends AuthEvent {}
 
+class AuthEventLoadingStop extends AuthEvent {}
+
 class AuthEventRegisterRequestOTP extends AuthEvent {
   CustomerModel customer;
   AuthEventRegisterRequestOTP({required this.customer});

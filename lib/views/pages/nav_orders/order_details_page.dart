@@ -52,7 +52,7 @@ class OrderDetailsPage extends StatelessWidget {
             verticalHeight16,
             Divider(color: Colors.grey[300], thickness: 1),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -62,6 +62,16 @@ class OrderDetailsPage extends StatelessWidget {
                     color: order.status.color,
                     fontWeight: FontWeight.normal,
                   ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  myText("Pay By: ", fontWeight: FontWeight.normal),
+                  myText(order.payment),
                 ],
               ),
             ),

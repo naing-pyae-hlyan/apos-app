@@ -3,6 +3,7 @@ flutter 3.22.0
 18/08/2024 (1.0.0)
 1. UPDATE: Notification Request.
 2. UPDATE: OTP only allow digit.
+3. NEW: Payment Dialog.
 
 17/08/2024 (0.0.9)
 1. NEW: RegisterWithPhone.

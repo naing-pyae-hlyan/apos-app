@@ -19,18 +19,24 @@ class _SubmitOrderPageState extends State<SubmitOrderPage> {
     final CustomerModel? customer = CacheManager.currentCustomer;
     if (customer == null) return;
     final String orderId = RandomIdGenerator.generateUniqueId();
-    final order = OrderModel(
-      readableId: orderId,
-      customer: customer,
-      items: cartBloc.items,
-      orderDate: DateTime.now(),
-      totalAmount: cartBloc.totalItemsAmount,
-      statusId: 0,
-      status: OrderStatus.newOrder,
-      comment: commentTxtCtrl.text,
-    );
+    showPaymentDialog(
+      context,
+      onSelectedBank: (String bank) {
+        final order = OrderModel(
+          readableId: orderId,
+          customer: customer,
+          items: cartBloc.items,
+          orderDate: DateTime.now(),
+          totalAmount: cartBloc.totalItemsAmount,
+          statusId: 0,
+          status: OrderStatus.newOrder,
+          comment: commentTxtCtrl.text,
+          payment: bank,
+        );
 
-    orderBloc.add(OrderEventSubmitOrder(order: order));
+        orderBloc.add(OrderEventSubmitOrder(order: order));
+      },
+    );
   }
 
   void _orderStateListener(BuildContext context, OrderState state) {

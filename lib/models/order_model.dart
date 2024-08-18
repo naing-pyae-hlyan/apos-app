@@ -10,6 +10,7 @@ class OrderModel {
   final int statusId;
   final DateTime orderDate;
   final String comment;
+  final String payment;
 
   OrderStatus status;
 
@@ -23,6 +24,7 @@ class OrderModel {
     required this.statusId,
     required this.status,
     required this.comment,
+    required this.payment,
   });
 
   factory OrderModel.fromJson(Map<String, dynamic> json, String id) {
@@ -37,6 +39,7 @@ class OrderModel {
       statusId: json['status_id'],
       status: parseToOrderStatusForMobileUI(json["status_id"]),
       comment: json["comment"],
+      payment: json["payment"] ?? "",
     );
   }
 
@@ -49,6 +52,7 @@ class OrderModel {
       'total_amount': totalAmount,
       'status_id': statusId,
       'comment': comment,
+      'payment': payment,
     };
   }
 }
