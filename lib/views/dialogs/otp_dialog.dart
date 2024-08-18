@@ -77,6 +77,7 @@ class __OTPDialogState extends State<_OTPDialog> {
               autoFocus: true,
               controller: pinTxtCtrl,
               length: 6,
+              keyboardType: TextInputType.number,
               cursorColor: Consts.primaryColor,
               onCompleted: (_) => _verifyOTP(),
             ),

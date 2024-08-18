@@ -1,6 +1,7 @@
 export 'cache_manager.dart';
 export 'common_utils.dart';
 export 'consts.dart';
+export 'fcm_utils.dart';
 export 'firebase_firestore_utils.dart';
 export 'hash_utils.dart';
 export 'local_noti_service.dart';

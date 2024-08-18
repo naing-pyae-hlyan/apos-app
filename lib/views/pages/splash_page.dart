@@ -13,6 +13,10 @@ class _SplashPageState extends State<SplashPage> {
   late DbBloc dbBloc;
 
   Future<void> _checkCredentials() async {
+    if (!await FCMUtils.checkNotificationPermission()) {
+      await FCMUtils.requestNotiPermission();
+    }
+
     final username = await SpHelper.username;
     final password = await SpHelper.password;
     authBloc.add(AuthEventLogin(
