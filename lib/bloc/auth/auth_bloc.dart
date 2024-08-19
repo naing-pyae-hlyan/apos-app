@@ -11,6 +11,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEventForgotPasswordRequestOTP>(_onForgotPasswordRequestOTP);
     on<AuthEventForgotPasswordActivate>(_onForgotPasswordActivate);
     on<AuthEventUpdateCustomer>(_onUpdateCustomer);
+    on<AuthEventLogout>(_onLogout);
   }
 
   Future<void> _onLoading(
@@ -51,7 +52,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             authorize = true;
             accountIsActive = doc.data().status == 1;
             CacheManager.currentCustomer = doc.data();
-            await SpHelper.setFavItems(doc.data().favourites);
+            if (event.needToUpdateFavItems) {
+              await SpHelper.setFavItems(doc.data().favourites);
+            }
             break;
           }
         }
@@ -245,6 +248,32 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         .catchError(
           (error) => emit(_authStateFail(message: error.toString(), code: 5)),
         );
+  }
+
+  Future<void> _onLogout(
+    AuthEventLogout event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthStateLoading());
+    final String? userId = CacheManager.currentCustomer?.id;
+    if (userId == null) {
+      emit(AuthStateLoadingStop());
+    }
+    await SpHelper.favItems.then(
+      (Map<String, List<String>> favs) async {
+        await FFirestoreUtils.customerCollection
+            .doc(userId)
+            .update({
+              "favourites": Map.from(favs).map((k, v) =>
+                  MapEntry<String, dynamic>(
+                      k, List<dynamic>.from(v.map((x) => x)))),
+            })
+            .then(
+              (_) => emit(AuthStateLogout()),
+            )
+            .catchError((error) => _authStateFail(message: error.toString()));
+      },
+    );
   }
 
   AuthStateFail _authStateFail({

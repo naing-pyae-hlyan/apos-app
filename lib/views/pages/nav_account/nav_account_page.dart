@@ -8,19 +8,45 @@ class NavAccountPage extends StatefulWidget {
 }
 
 class _NavAccountPageState extends State<NavAccountPage> {
+  late AuthBloc authBloc;
   Future<void> _logout() async {
     showConfirmDialog(
       context,
       title: "Are you sure want to logout?",
       okLabel: "Logout",
       onTapOk: () async {
-        await SpHelper.clear();
-        CacheManager.clear();
-        if (mounted) {
-          context.pushAndRemoveUntil(const SplashPage());
-        }
+        authBloc.add(AuthEventLogout());
       },
     );
+  }
+
+  void _logoutStateListener(BuildContext context, AuthState state) async {
+    if (state is AuthStateLogout) {
+      CacheManager.clear();
+      await SpHelper.clear();
+      if (mounted) {
+        // ignore: use_build_context_synchronously
+        context
+            .pushAndRemoveUntil(const SplashPage(needToUpdateFavItems: true));
+      }
+    }
+    if (state is AuthStateFail) {
+      if (mounted) {
+        showErrorDialog(
+          // ignore: use_build_context_synchronously
+          context,
+          title: "Failed!",
+          description: state.error.message,
+          onTapOk: () {},
+        );
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    authBloc = context.read<AuthBloc>();
+    super.initState();
   }
 
   @override
@@ -79,10 +105,18 @@ class _NavAccountPageState extends State<NavAccountPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextButton.icon(
-                  onPressed: _logout,
-                  label: myText("Logout", color: Colors.red),
-                  icon: const Icon(Icons.logout, color: Colors.red),
+                BlocConsumer<AuthBloc, AuthState>(
+                  listener: _logoutStateListener,
+                  builder: (_, state) {
+                    if (state is AuthStateLoading) {
+                      return const MyCircularIndicator();
+                    }
+                    return TextButton.icon(
+                      onPressed: _logout,
+                      label: myText("Logout", color: Colors.red),
+                      icon: const Icon(Icons.logout, color: Colors.red),
+                    );
+                  },
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 8),

@@ -55,7 +55,10 @@ class _NavFavPageState extends State<NavFavPage> {
 
                           if (data.isEmpty) {
                             return Center(
-                              child: myText("No favorite items"),
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 32),
+                                child: myText("No favorite items"),
+                              ),
                             );
                           }
 

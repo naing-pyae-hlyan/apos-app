@@ -3,6 +3,7 @@ flutter 3.22.0
 19/08/2024 (1.0.1)
 1. NEW: ForgotPassword.
 2. NEW: FavoriteItems is added.
+3. NEW: Fav items each user validate is added.
 
 18/08/2024 (1.0.0)
 1. UPDATE: Notification Request.

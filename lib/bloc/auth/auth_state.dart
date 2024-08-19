@@ -39,3 +39,5 @@ class AuthStateUpdateCustomerSuccess extends AuthState {
   final CustomerModel customer;
   AuthStateUpdateCustomerSuccess(this.customer);
 }
+
+class AuthStateLogout extends AuthState {}

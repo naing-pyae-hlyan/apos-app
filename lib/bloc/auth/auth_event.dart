@@ -6,10 +6,12 @@ class AuthEventLogin extends AuthEvent {
   String email;
   String password;
   bool rememberMe;
+  bool needToUpdateFavItems;
   AuthEventLogin({
     required this.email,
     required this.password,
     required this.rememberMe,
+    required this.needToUpdateFavItems,
   });
 }
 
@@ -53,3 +55,5 @@ class AuthEventUpdateCustomer extends AuthEvent {
   CustomerModel customer;
   AuthEventUpdateCustomer({required this.customer});
 }
+
+class AuthEventLogout extends AuthEvent {}

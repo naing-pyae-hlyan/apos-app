@@ -2,7 +2,11 @@ import 'package:apos_app/lib_exp.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class SplashPage extends StatefulWidget {
-  const SplashPage({super.key});
+  final bool needToUpdateFavItems;
+  const SplashPage({
+    super.key,
+    this.needToUpdateFavItems = false,
+  });
 
   @override
   State<SplashPage> createState() => _SplashPageState();
@@ -23,6 +27,7 @@ class _SplashPageState extends State<SplashPage> {
       email: username,
       password: password,
       rememberMe: true,
+      needToUpdateFavItems: widget.needToUpdateFavItems,
     ));
   }
 

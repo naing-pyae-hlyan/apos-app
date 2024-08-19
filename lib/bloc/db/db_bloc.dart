@@ -66,8 +66,13 @@ class DbBloc extends Bloc<DbEvent, DbState> {
           } else {
             // products isNotEmpty && isNotFav
             products.removeWhere((String id) => id == event.productId);
-            cached[event.categoryId] = [];
-            cached[event.categoryId]!.addAll(products);
+            if (products.isEmpty) {
+              //if itemids is empty remove also map [key]
+              cached.remove(event.categoryId);
+            } else {
+              cached[event.categoryId] = [];
+              cached[event.categoryId]!.addAll(products);
+            }
           }
         }
 

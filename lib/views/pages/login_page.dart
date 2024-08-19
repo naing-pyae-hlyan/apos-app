@@ -28,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
       email: emailTxtCtrl.text,
       password: hashPassword,
       rememberMe: true,
+      needToUpdateFavItems: true,
     ));
   }
 
