@@ -269,13 +269,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           ));
           return;
         }
-        final password = event.action == CustomerUpdateAction.password
-            ? HashUtils.hashPassword(event.newValue)
-            : HashUtils.hashPassword(event.password);
+
         emit(AuthStateUpdateCustomerRequestOTP(
           action: event.action,
           newValue: event.newValue,
-          password: password,
+          password: HashUtils.hashPassword(event.password),
         ));
       },
     ).catchError(
