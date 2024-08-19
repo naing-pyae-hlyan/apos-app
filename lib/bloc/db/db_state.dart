@@ -12,3 +12,5 @@ class DbStateFail extends DbState {
 }
 
 class DbStateGetProductsWithCategoryFromServerSuccess extends DbState {}
+
+class DbStateUpdateFavItemSuccess extends DbState {}

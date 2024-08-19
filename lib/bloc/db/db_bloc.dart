@@ -3,7 +3,9 @@ import 'package:apos_app/lib_exp.dart';
 class DbBloc extends Bloc<DbEvent, DbState> {
   DbBloc() : super(DbStateInitial()) {
     on<DbEventGetProductsWithCategoryFromServer>(
-        _getProductsWithCategoryFromServer);
+      _getProductsWithCategoryFromServer,
+    );
+    on<DbEventUpdateFavItem>(_updateFavItem);
   }
 
   Future<void> _getProductsWithCategoryFromServer(
@@ -38,6 +40,40 @@ class DbBloc extends Bloc<DbEvent, DbState> {
         emit(DbStateFail(
           error: ErrorModel(message: error.toString(), code: 1),
         ));
+      },
+    );
+  }
+
+  Future<void> _updateFavItem(
+    DbEventUpdateFavItem event,
+    Emitter<DbState> emit,
+  ) async {
+    emit(DbStateLoading());
+    await SpHelper.favItems.then(
+      (Map<String, List<String>> favs) async {
+        var cached = favs;
+
+        // Doesn't exist
+        if (cached[event.categoryId] == null) {
+          cached[event.categoryId] = [event.productId];
+        } else {
+          List<String> products = cached[event.categoryId] ?? [];
+
+          if (products.isEmpty) {
+            cached[event.categoryId] = [event.productId];
+          } else if (event.isFav) {
+            (cached[event.categoryId] ?? []).add(event.productId);
+          } else {
+            // products isNotEmpty && isNotFav
+            products.removeWhere((String id) => id == event.productId);
+            cached[event.categoryId] = [];
+            cached[event.categoryId]!.addAll(products);
+          }
+        }
+
+        await SpHelper.setFavItems(cached).then(
+          (_) => emit(DbStateUpdateFavItemSuccess()),
+        );
       },
     );
   }

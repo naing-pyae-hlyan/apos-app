@@ -19,6 +19,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   String? _selectedType;
   int? _selectedColor;
   late CartBloc cartBloc;
+  late DbBloc dbBloc;
 
   void addToCart() {
     final item = ItemModel(
@@ -47,6 +48,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
   void initState() {
     cartBloc = context.read<CartBloc>();
+    dbBloc = context.read<DbBloc>();
     super.initState();
     if (widget.item != null) {
       _itemQty = widget.item?.qty ?? 1;
@@ -65,7 +67,43 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
-      appBar: myAppBar(title: myTitle(widget.product.name)),
+      appBar: myAppBar(
+        title: myTitle(widget.product.name),
+        actions: [
+          BlocBuilder<DbBloc, DbState>(
+            builder: (_, state) {
+              if (state is DbStateLoading) {
+                return emptyUI;
+              }
+              return FutureBuilder<bool>(
+                future: SpHelper.itemIsFav(
+                  widget.product.categoryId,
+                  widget.product.id,
+                ),
+                builder: (context, snapshot) {
+                  final bool isFav = snapshot.data ?? false;
+                  return IconButton(
+                    onPressed: () {
+                      if (widget.product.categoryId != null &&
+                          widget.product.id != null) {
+                        dbBloc.add(DbEventUpdateFavItem(
+                          categoryId: widget.product.categoryId!,
+                          productId: widget.product.id!,
+                          isFav: !isFav,
+                        ));
+                      }
+                    },
+                    icon: Icon(
+                      isFav ? Icons.favorite : Icons.favorite_border,
+                      color: Consts.primaryColor,
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ],
+      ),
       padding: EdgeInsets.zero,
       fab: floatingActionButton(
         onPressed: addToCart,

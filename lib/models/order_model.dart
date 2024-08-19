@@ -39,7 +39,7 @@ class OrderModel {
       statusId: json['status_id'],
       status: parseToOrderStatusForMobileUI(json["status_id"]),
       comment: json["comment"],
-      payment: json["payment"] ?? "",
+      payment: json["payment"] ?? "CASH",
     );
   }
 

@@ -51,6 +51,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             authorize = true;
             accountIsActive = doc.data().status == 1;
             CacheManager.currentCustomer = doc.data();
+            await SpHelper.setFavItems(doc.data().favourites);
             break;
           }
         }
