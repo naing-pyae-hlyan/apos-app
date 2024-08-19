@@ -8,6 +8,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEventLogin>(_onLogin);
     on<AuthEventRegisterRequestOTP>(_onRegisterRequestOTP);
     on<AuthEventRegisterActivate>(_onRegisterActivate);
+    on<AuthEventForgotPasswordRequestOTP>(_onForgotPasswordRequestOTP);
+    on<AuthEventForgotPasswordActivate>(_onForgotPasswordActivate);
     on<AuthEventUpdateCustomer>(_onUpdateCustomer);
   }
 
@@ -136,6 +138,64 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           (error) => emit(
             _authStateFail(message: error.toString(), code: 5),
           ),
+        );
+  }
+
+  Future<void> _onForgotPasswordRequestOTP(
+    AuthEventForgotPasswordRequestOTP event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthStateLoading());
+    if (event.phone.isEmpty) {
+      emit(_authStateFail(message: "Enter Phone", code: 1));
+      return;
+    }
+    if (event.email.isEmpty) {
+      emit(_authStateFail(message: "Enter Email", code: 2));
+      return;
+    }
+
+    await FFirestoreUtils.customerCollection.get().then(
+      (QuerySnapshot<CustomerModel> snapshot) async {
+        bool accountIsExists = false;
+        String? id;
+        for (var doc in snapshot.docs) {
+          if (event.email == doc.data().email &&
+              event.phone == doc.data().phone) {
+            id = doc.data().id;
+            accountIsExists = true;
+            break;
+          }
+        }
+        if (accountIsExists && id != null) {
+          emit(AuthStateForgotPasswordRequestOTP(
+            id: id,
+            phone: event.phone,
+            password: event.password,
+          ));
+        } else {
+          emit(_authStateFail(
+            message: "Your account does not exist.",
+            code: 3,
+          ));
+        }
+      },
+    ).catchError((error) {
+      emit(_authStateFail(message: error.toString(), code: 3));
+    });
+  }
+
+  Future<void> _onForgotPasswordActivate(
+    AuthEventForgotPasswordActivate event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthStateLoading());
+    await FFirestoreUtils.customerCollection
+        .doc(event.id)
+        .update({"password": event.password})
+        .then((_) => emit(AuthStateForgotPasswordSuccess()))
+        .catchError(
+          (error) => emit(_authStateFail(message: error.toString(), code: 3)),
         );
   }
 

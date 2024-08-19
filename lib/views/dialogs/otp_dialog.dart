@@ -68,7 +68,7 @@ class __OTPDialogState extends State<_OTPDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          myText("Your code was sent to your phone."),
+          myText("Your code was sent to your device."),
           verticalHeight8,
           SizedBox(
             width: context.screenWidth * 0.7,

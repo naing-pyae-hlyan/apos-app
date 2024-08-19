@@ -22,6 +22,19 @@ class AuthStateRegisterRequestOTP extends AuthState {
 
 class AuthStateRegisterSuccess extends AuthState {}
 
+class AuthStateForgotPasswordRequestOTP extends AuthState {
+  final String id;
+  final String phone;
+  final String password;
+  AuthStateForgotPasswordRequestOTP({
+    required this.id,
+    required this.phone,
+    required this.password,
+  });
+}
+
+class AuthStateForgotPasswordSuccess extends AuthState {}
+
 class AuthStateUpdateCustomerSuccess extends AuthState {
   final CustomerModel customer;
   AuthStateUpdateCustomerSuccess(this.customer);

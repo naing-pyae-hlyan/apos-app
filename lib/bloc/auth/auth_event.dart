@@ -27,6 +27,28 @@ class AuthEventRegisterActivate extends AuthEvent {
   AuthEventRegisterActivate(this.customer);
 }
 
+class AuthEventForgotPasswordRequestOTP extends AuthEvent {
+  final String password;
+  final String phone;
+  final String email;
+  AuthEventForgotPasswordRequestOTP({
+    required this.password,
+    required this.phone,
+    required this.email,
+  });
+}
+
+class AuthEventForgotPasswordActivate extends AuthEvent {
+  final String id;
+  final String password;
+  final String phone;
+  AuthEventForgotPasswordActivate({
+    required this.id,
+    required this.password,
+    required this.phone,
+  });
+}
+
 class AuthEventUpdateCustomer extends AuthEvent {
   CustomerModel customer;
   AuthEventUpdateCustomer({required this.customer});
