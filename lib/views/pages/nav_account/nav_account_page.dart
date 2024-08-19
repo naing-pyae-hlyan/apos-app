@@ -9,6 +9,11 @@ class NavAccountPage extends StatefulWidget {
 
 class _NavAccountPageState extends State<NavAccountPage> {
   late AuthBloc authBloc;
+
+  void _onUpdate(CustomerUpdateAction action) {
+    showCustomerUpdateDialog(context, action: action);
+  }
+
   Future<void> _logout() async {
     showConfirmDialog(
       context,
@@ -31,7 +36,7 @@ class _NavAccountPageState extends State<NavAccountPage> {
       }
     }
     if (state is AuthStateFail) {
-      if (mounted) {
+      if (mounted && state.showErrorDialog) {
         showErrorDialog(
           // ignore: use_build_context_synchronously
           context,
@@ -58,48 +63,79 @@ class _NavAccountPageState extends State<NavAccountPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Stack(
-              alignment: Alignment.topRight,
-              children: [
-                MyCard(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      verticalHeight32,
-                      const Icon(
-                        Icons.person,
-                        size: 64,
-                        color: Consts.primaryColor,
+            SizedBox(
+              width: double.infinity,
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 48),
+                    child: MyCard(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 32),
+                        child: Table(
+                          defaultVerticalAlignment:
+                              TableCellVerticalAlignment.middle,
+                          columnWidths: const {
+                            0: FlexColumnWidth(1),
+                            1: FlexColumnWidth(2),
+                            2: FlexColumnWidth(0.3),
+                          },
+                          children: [
+                            accountData(
+                              key: "Name:",
+                              value: CacheManager.currentCustomer?.name,
+                              onEdit: () => _onUpdate(
+                                CustomerUpdateAction.name,
+                              ),
+                            ),
+                            accountData(
+                              key: "Email:",
+                              value: CacheManager.currentCustomer?.email,
+                              onEdit: () => _onUpdate(
+                                CustomerUpdateAction.emial,
+                              ),
+                            ),
+                            accountData(
+                              key: "Phone:",
+                              value: CacheManager.currentCustomer?.phone,
+                              onEdit: () => _onUpdate(
+                                CustomerUpdateAction.phone,
+                              ),
+                            ),
+                            accountData(
+                              key: "Address:",
+                              value: CacheManager.currentCustomer?.address,
+                              onEdit: () => _onUpdate(
+                                CustomerUpdateAction.address,
+                              ),
+                            ),
+                            accountData(
+                              key: "Password:",
+                              value: "********",
+                              onEdit: () => _onUpdate(
+                                CustomerUpdateAction.password,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      verticalHeight8,
-                      myText(
-                        CacheManager.currentCustomer?.name,
-                        fontWeight: FontWeight.w700,
-                      ),
-                      verticalHeight8,
-                      _row(
-                        key: "Email",
-                        value: CacheManager.currentCustomer?.email,
-                      ),
-                      verticalHeight4,
-                      _row(
-                        key: "Phone",
-                        value: CacheManager.currentCustomer?.phone,
-                      ),
-                      verticalHeight4,
-                      _row(
-                        key: "Address",
-                        value: CacheManager.currentCustomer?.address,
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-                TextButton.icon(
-                  onPressed: () => context.push(const AccountEditPage()),
-                  label: myText("Edit", color: Colors.black),
-                  icon: const Icon(Icons.edit_square, color: Colors.black),
-                ),
-              ],
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(96),
+                      color: Consts.secondaryColor,
+                    ),
+                    padding: const EdgeInsets.all(2),
+                    child: const Icon(
+                      Icons.account_circle_rounded,
+                      color: Consts.primaryColor,
+                      size: 96,
+                    ),
+                  ),
+                ],
+              ),
             ),
             verticalHeight32,
             Row(
@@ -130,17 +166,30 @@ class _NavAccountPageState extends State<NavAccountPage> {
     );
   }
 
-  Widget _row({
+  TableRow accountData({
     required String key,
     required String? value,
+    required Function() onEdit,
   }) =>
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      TableRow(
         children: [
-          myText(key),
-          Flexible(
-            child: myText(value, textAlign: TextAlign.end),
+          TableCell(child: myText(key, fontSize: 14)),
+          TableCell(
+              child: myText(
+            value,
+            textAlign: TextAlign.end,
+            fontSize: 14,
+            maxLines: 4,
+          )),
+          TableCell(
+            child: IconButton(
+              onPressed: onEdit,
+              icon: const Icon(
+                Icons.edit,
+                color: Colors.indigo,
+                size: 16,
+              ),
+            ),
           ),
         ],
       );

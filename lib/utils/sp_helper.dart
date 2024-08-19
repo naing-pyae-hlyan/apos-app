@@ -26,6 +26,14 @@ class SpHelper {
     await setString(_passwordKey, password);
   }
 
+  static Future<void> setEmail(String newEmail) async {
+    await setString(_emailKey, newEmail);
+  }
+
+  static Future<void> setPassword(String newPassword) async {
+    await setString(_passwordKey, newPassword);
+  }
+
   static Future<void> setFcmToken(String? fcmToken) async {
     if (fcmToken != null) {
       await setString(_fcmTokenKey, fcmToken);

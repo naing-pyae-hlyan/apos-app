@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:apos_app/lib_exp.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -7,7 +8,7 @@ void showOTPDialog(
 }) =>
     showAdaptiveDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (_) => _OTPDialog(
         onSuccess: onSuccess,
       ),
@@ -25,6 +26,12 @@ class _OTPDialog extends StatefulWidget {
 
 class __OTPDialogState extends State<_OTPDialog> {
   ValueNotifier<String> errorListener = ValueNotifier("");
+  ValueNotifier<bool> canSendListener = ValueNotifier(false);
+  late StreamController<int> streamController;
+  late Stream<int> countdownStream;
+  Timer? timer;
+  int currentSeconds = 60;
+
   String? _otp;
   final pinTxtCtrl = TextEditingController();
   void _verifyOTP() async {
@@ -40,22 +47,52 @@ class __OTPDialogState extends State<_OTPDialog> {
     widget.onSuccess();
   }
 
-  @override
-  void dispose() {
-    // if (mounted) pinTxtCtrl.dispose();
-    super.dispose();
+  void resendOTP() {
+    startCountdown();
+    requestOTP();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    doAfterBuild(callback: () {
-      LocalNotiService.showOTP(
+  void startCountdown() {
+    timer?.cancel();
+    currentSeconds = 60;
+    canSendListener.value = false;
+    timer = Timer.periodic(
+      const Duration(seconds: 1),
+      (timer) {
+        if (currentSeconds > 0) {
+          streamController.add(--currentSeconds);
+        } else {
+          canSendListener.value = true;
+          timer.cancel();
+        }
+      },
+    );
+  }
+
+  void requestOTP() => LocalNotiService.showOTP(
         generatedOTP: (otp) {
           _otp = otp;
         },
       );
+
+  @override
+  void initState() {
+    super.initState();
+    streamController = StreamController();
+    countdownStream = streamController.stream.asBroadcastStream();
+    startCountdown();
+
+    doAfterBuild(callback: () {
+      requestOTP();
     });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    streamController.close();
+
+    super.dispose();
   }
 
   @override
@@ -91,6 +128,34 @@ class __OTPDialogState extends State<_OTPDialog> {
                 return errorText(value);
               },
             ),
+          ),
+          verticalHeight16,
+          StreamBuilder<int>(
+            stream: countdownStream,
+            builder: (_, snapshot) {
+              final sec = snapshot.data ?? 60;
+              if (sec == 0) return emptyUI;
+              return myText(
+                "Resend OTP in $sec seconds",
+              );
+            },
+          ),
+          ValueListenableBuilder<bool>(
+            valueListenable: canSendListener,
+            builder: (_, bool canSend, __) {
+              if (canSend) {
+                return TextButton.icon(
+                  onPressed: resendOTP,
+                  label: myText("Resend OTP", color: Consts.primaryColor),
+                  icon: const Icon(
+                    Icons.refresh_rounded,
+                    color: Consts.primaryColor,
+                  ),
+                );
+              }
+
+              return emptyUI;
+            },
           ),
         ],
       ),

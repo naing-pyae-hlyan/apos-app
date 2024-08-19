@@ -51,9 +51,30 @@ class AuthEventForgotPasswordActivate extends AuthEvent {
   });
 }
 
-class AuthEventUpdateCustomer extends AuthEvent {
-  CustomerModel customer;
-  AuthEventUpdateCustomer({required this.customer});
+class AuthEventUpdateCustomerDataRequestOTP extends AuthEvent {
+  final CustomerUpdateAction action;
+  final String newValue;
+  final String password;
+
+  AuthEventUpdateCustomerDataRequestOTP({
+    required this.action,
+    required this.newValue,
+    required this.password,
+  });
+}
+
+class AuthEventUpdateCustomerData extends AuthEvent {
+  final bool needToValidate;
+  final CustomerUpdateAction action;
+  final String newValue;
+  final String password;
+
+  AuthEventUpdateCustomerData({
+    required this.needToValidate,
+    required this.action,
+    required this.newValue,
+    required this.password,
+  });
 }
 
 class AuthEventLogout extends AuthEvent {}
