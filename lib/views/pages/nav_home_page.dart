@@ -29,6 +29,14 @@ class _NavHomePageState extends State<NavHomePage> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    doAfterBuild(callback: () {
+      FFirestoreUtils.listenOrderStatusChange();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(

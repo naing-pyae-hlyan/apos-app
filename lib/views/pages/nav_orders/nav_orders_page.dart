@@ -67,6 +67,7 @@ class _NavOrdersPageState extends State<NavOrdersPage> {
                     "customer.id",
                     isEqualTo: CacheManager.currentCustomer?.readableId,
                   )
+                  .orderBy("order_date", descending: true)
                   .snapshots(),
               builder: (_, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {

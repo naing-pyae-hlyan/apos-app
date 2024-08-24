@@ -2,6 +2,7 @@ flutter 3.22.0
 
 24/08/2024 (1.0.2)
 1. UPDATE: SubmitOrder UI design is updated.
+2. NEW: Order status is change show notification.
 
 19/08/2024 (1.0.1)
 1. NEW: ForgotPassword.

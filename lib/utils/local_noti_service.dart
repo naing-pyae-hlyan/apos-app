@@ -41,6 +41,7 @@ class LocalNotiService {
         AndroidNotificationDetails(
       'apos_app',
       'notification',
+      icon: "@mipmap/ic_launcher",
       importance: Importance.max,
       priority: Priority.high,
       timeoutAfter: duration,
