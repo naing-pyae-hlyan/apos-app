@@ -1,5 +1,8 @@
 flutter 3.22.0
 
+24/08/2024 (1.0.2)
+1. UPDATE: SubmitOrder UI design is updated.
+
 19/08/2024 (1.0.1)
 1. NEW: ForgotPassword.
 2. NEW: FavoriteItems is added.

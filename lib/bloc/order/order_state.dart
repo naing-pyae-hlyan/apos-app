@@ -6,6 +6,8 @@ class OrderStateInitial extends OrderState {}
 
 class OrderStateLoading extends OrderState {}
 
+class OrderStateStopLoading extends OrderState {}
+
 class OrderStateFail extends OrderState {
   final ErrorModel error;
   OrderStateFail({required this.error});

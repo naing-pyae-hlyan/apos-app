@@ -154,7 +154,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   }
 
                   return MyButton(
-                    label: "Register",
+                    label: "Request OTP",
                     icon: Icons.login,
                     labelColor: Colors.white,
                     backgroundColor: Consts.primaryColor,

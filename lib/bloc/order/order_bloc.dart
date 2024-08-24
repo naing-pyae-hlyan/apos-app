@@ -3,6 +3,14 @@ import 'package:apos_app/lib_exp.dart';
 class OrderBloc extends Bloc<OrderEvent, OrderState> {
   OrderBloc() : super(OrderStateInitial()) {
     on<OrderEventSubmitOrder>(_onSubmit);
+    on<OrderEventStopLoading>(_stopLoading);
+  }
+
+  Future<void> _stopLoading(
+    OrderEventStopLoading event,
+    Emitter<OrderState> emit,
+  ) async {
+    emit(OrderStateStopLoading());
   }
 
   Future<void> _onSubmit(

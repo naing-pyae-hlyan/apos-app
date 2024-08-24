@@ -6,6 +6,7 @@ class MyScaffold extends StatelessWidget {
   final PreferredSizeWidget? appBar;
   final FloatingActionButton? fab;
   final EdgeInsetsGeometry? padding;
+  final Widget? bottomNavigationBar;
   const MyScaffold({
     super.key,
     required this.body,
@@ -13,6 +14,7 @@ class MyScaffold extends StatelessWidget {
     this.appBar,
     this.padding,
     this.fab,
+    this.bottomNavigationBar,
   });
 
   @override
@@ -28,6 +30,7 @@ class MyScaffold extends StatelessWidget {
             child: body,
           ),
           floatingActionButton: fab,
+          bottomNavigationBar: bottomNavigationBar,
         ),
       ),
     );

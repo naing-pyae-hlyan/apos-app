@@ -43,6 +43,19 @@ Widget circularColor(int color) => SizedBox(
       ),
     );
 
+Widget checked() => const SizedBox(
+      width: 24,
+      height: 24,
+      child: CircleAvatar(
+        backgroundColor: Consts.primaryColor,
+        child: Icon(
+          Icons.check,
+          size: 18,
+          color: Colors.white,
+        ),
+      ),
+    );
+
 Widget circularCount(int count) {
   String number = count > 99 ? "99+" : "$count";
   return Container(
