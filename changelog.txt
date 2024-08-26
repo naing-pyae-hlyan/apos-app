@@ -1,5 +1,8 @@
 flutter 3.22.0
 
+26/08/2024 (1.0.3)
+1. UPDATE: OTPDialog renderFlex issue is fixed.
+
 24/08/2024 (1.0.2)
 1. UPDATE: SubmitOrder UI design is updated.
 2. NEW: Order status is change show notification.

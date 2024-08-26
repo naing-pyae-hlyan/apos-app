@@ -102,22 +102,22 @@ class __OTPDialogState extends State<_OTPDialog> {
       surfaceTintColor: Colors.white,
       shadowColor: Consts.secondaryColor,
       title: myTitle("OTP Verify", textAlign: TextAlign.center),
+      contentPadding: const EdgeInsets.all(8),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           myText("Your code was sent to your device."),
           verticalHeight8,
-          SizedBox(
-            width: context.screenWidth * 0.7,
-            child: PinCodeTextField(
-              appContext: context,
-              autoFocus: true,
-              controller: pinTxtCtrl,
-              length: 6,
-              keyboardType: TextInputType.number,
-              cursorColor: Consts.primaryColor,
-              onCompleted: (_) => _verifyOTP(),
-            ),
+          PinCodeTextField(
+            appContext: context,
+            autoFocus: true,
+            controller: pinTxtCtrl,
+            length: 6,
+            scrollPadding: EdgeInsets.zero,
+            keyboardType: TextInputType.number,
+            cursorColor: Consts.primaryColor,
+            pinTheme: const PinTheme.defaults(fieldWidth: 32),
+            onCompleted: (_) => _verifyOTP(),
           ),
           verticalHeight8,
           Align(
