@@ -73,7 +73,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
       },
     ).catchError((error) {
-      emit(_authStateFail(message: error.toString(), code: 2));
+      emit(_authStateFail(message: "Login: ${error.toString()}", code: 2));
     });
   }
 

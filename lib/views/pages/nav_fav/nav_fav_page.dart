@@ -45,6 +45,22 @@ class _NavFavPageState extends State<NavFavPage> {
                       return FutureBuilder(
                         future: SpHelper.favItems,
                         builder: (_, snapshot) {
+                          if (CacheManager.categories.isEmpty) {
+                            return Center(
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 32),
+                                child: myText("No favorite items"),
+                              ),
+                            );
+                          }
+                          if (CacheManager.products.isEmpty) {
+                            return Center(
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 32),
+                                child: myText("No favorite items"),
+                              ),
+                            );
+                          }
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return const Center(
@@ -92,9 +108,18 @@ class _NavFavPageState extends State<NavFavPage> {
   }
 
   Widget _listTile(String categoryId, List<String> itemIds) {
-    final CategoryModel category =
-        CacheManager.categories.firstWhere((cm) => categoryId == cm.id);
+    if (CacheManager.categories.isEmpty) return emptyUI;
+    CategoryModel? category;
+    for (final CategoryModel cm in CacheManager.categories) {
+      if (cm.id == categoryId) {
+        category = cm;
+        break;
+      }
+    }
+
+    if (category == null) return emptyUI;
     final List<ProductModel> products = [];
+    if (CacheManager.products.isEmpty) return emptyUI;
     for (String id in itemIds) {
       for (ProductModel pm in CacheManager.products) {
         if (pm.id == id) {

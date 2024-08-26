@@ -30,7 +30,8 @@ class DbBloc extends Bloc<DbEvent, DbState> {
         ).catchError(
           (error) {
             emit(DbStateFail(
-              error: ErrorModel(message: error.toString(), code: 2),
+              error:
+                  ErrorModel(message: "Product: ${error.toString()}", code: 2),
             ));
           },
         );
@@ -38,7 +39,7 @@ class DbBloc extends Bloc<DbEvent, DbState> {
     ).catchError(
       (error) {
         emit(DbStateFail(
-          error: ErrorModel(message: error.toString(), code: 1),
+          error: ErrorModel(message: "Category: ${error.toString()}", code: 1),
         ));
       },
     );
